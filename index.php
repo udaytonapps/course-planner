@@ -126,10 +126,8 @@ if (isset($_GET["context"])) {
 }
 
 $menu = new \Tsugi\UI\MenuSet();
-$menu->setHome('Course Planner', 'index.php?context='.$context);
+$menu->setHome('My Course Planner', 'index.php?context='.$context);
 $menu->addRight('<span class="fas fa-print" aria-hidden="true"></span> Print', "");
-$menu->addRight('<span class="fas fa-share-square" aria-hidden="true"></span> Share (via Email)', "");
-$menu->addRight('<span class="fas fa-download" aria-hidden="true"></span> Download', "");
 
 
 $OUTPUT->header();
@@ -203,6 +201,18 @@ $OUTPUT->pageTitle($contextTitle, false, false);
         }
         ?>
         </tbody>
+        <tfoot>
+        <tr>
+            <th>Weeks</th>
+            <th>Topic(s)</th>
+            <th>Readings</th>
+            <th>Videos</th>
+            <th>Activities</th>
+            <th>Assignments</th>
+            <th>Tests/Exams</th>
+            <th>Discussions</th>
+        </tr>
+        </tfoot>
     </table>
 </div>
     <div id="editModal" class="modal fade" role="dialog">
