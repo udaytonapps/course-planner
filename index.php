@@ -2,7 +2,6 @@
 require_once "../config.php";
 
 use \Tsugi\Core\LTIX;
-use \Tsugi\UI\SettingsForm;
 
 $LAUNCH = LTIX::requireData();
 
@@ -116,9 +115,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if (isset($_GET["context"])) {
     $context = $_GET["context"];
+    // Get the title for the context
+    $query = "SELECT title FROM {$p}lti_context WHERE context_id = :contextId;";
+    $arr = array(':contextId' => $context);
+    $contextData = $PDOX->rowDie($query, $arr);
+    $contextTitle = $contextData ? $contextData["title"] : "";
 } else {
     $context = $CONTEXT->id;
+    $contextTitle = $CONTEXT->title;
 }
+
+$menu = new \Tsugi\UI\MenuSet();
+$menu->setHome('Course Planner', 'index.php?context='.$context);
+$menu->addRight('<span class="fas fa-print" aria-hidden="true"></span> Print', "");
+$menu->addRight('<span class="fas fa-share-square" aria-hidden="true"></span> Share (via Email)', "");
+$menu->addRight('<span class="fas fa-download" aria-hidden="true"></span> Download', "");
+
 
 $OUTPUT->header();
 ?>
@@ -126,15 +138,15 @@ $OUTPUT->header();
 <?php
 $OUTPUT->bodyStart();
 
-$OUTPUT->topNav(false);
+$OUTPUT->topNav($menu);
 
 echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
 
-$OUTPUT->pageTitle("Course Planner", false, false);
+$OUTPUT->pageTitle($contextTitle, false, false);
 ?>
-
+<p class="lead">Click on a cell in the table to add content or click on the row title to edit all items in the row.</p>
 <div class="table-responsive">
     <table class="table table-bordered table-condensed">
         <thead>
@@ -156,7 +168,7 @@ $OUTPUT->pageTitle("Course Planner", false, false);
             $weekStmt->execute(array(":context" => $context, ":weekNumber" => $weekNum));
             $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
             echo '<tr>';
-            echo'<th>'.getWeekInfo($weekNum).'</th>';
+            echo'<th data-week="'.$weekNum.'">'.getWeekInfo($weekNum).'</th>';
             ?>
             <td data-week="<?=$weekNum?>" data-contenttype="Topic(s)" <?=$planWeek && !empty($planWeek["topics"]) ? 'class="hasContent"' : ''?>>
                 <span><?=$planWeek ? strip_tags($planWeek["topics"]) : ""?></span>
@@ -264,7 +276,8 @@ $OUTPUT->footerStart();
             });
             $("th").off("click").on("click", function() {
                 // navigate to edit week
-                window.location.href = 'edit-week.php?PHPSESSID=<?=$_GET["PHPSESSID"]?>'
+                let week = $(this).data("week");
+                window.location.href = 'edit-week.php?context=<?=$context?>&week='+week+'&PHPSESSID=<?=$_GET["PHPSESSID"]?>'
             });
         });
     </script>
