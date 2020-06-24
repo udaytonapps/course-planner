@@ -1,11 +1,17 @@
 div.table-responsive {
     max-height: 600px;
     overflow-y: auto;
+    margin-bottom: 160px;
+    padding-bottom: 0;
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+    -moz-box-shadow: 0 10px 6px -6px #777;
+    box-shadow: 0 10px 6px -6px #777;
 }
 table {
     overflow: hidden;
     table-layout: fixed;
     width: 100%;
+    margin-bottom: 0 !important;
 }
 td, th {
     position: relative;
