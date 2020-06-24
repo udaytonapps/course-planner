@@ -15,6 +15,7 @@ $REGISTER_LTI2 = array(
         "internal"
     ),
     "screen_shots" => array(
-    )
+    ),
+    "hide_from_store" => true
 );
 
