@@ -1,0 +1,54 @@
+div.table-responsive {
+    max-height: 600px;
+    overflow-y: auto;
+}
+table {
+    overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+}
+td, th {
+    position: relative;
+}
+thead th {
+    width: 12%;
+    background: #EDF2F7;
+    z-index: 2;
+    position: sticky;
+    top: 0;
+}
+thead th:first-of-type {
+    width: 16%;
+}
+tr:hover {
+    background: #E2E8F0;
+}
+tbody th:hover, tbody td:hover {
+    cursor: pointer;
+    background: #90CDF4;
+}
+td.hasContent {
+    background: #BEE3F8;
+}
+td.hasContent span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+td:hover::after, td.hasContent:hover::after {
+    content: "";
+    position: absolute;
+    background: #E2E8F0;
+    left: 0;
+    top: -5000px;
+    height: 10000px;
+    width: 100%;
+    z-index: -1;
+}
+textarea.content {
+    display:none;
+}
+.ck-editor__editable_inline {
+    min-height: 160px;
+}
