@@ -1,7 +1,3 @@
-div.table-responsive {
-    max-height: 100vh;
-    overflow-y: auto;
-}
 table {
     overflow: hidden;
     table-layout: fixed;
@@ -14,8 +10,6 @@ thead th {
     width: 12%;
     background: #EDF2F7;
     z-index: 2;
-    position: sticky;
-    top: 0;
 }
 thead th:first-of-type {
     width: 16%;
