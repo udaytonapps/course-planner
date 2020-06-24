@@ -1,5 +1,5 @@
 div.table-responsive {
-    max-height: 100vh;
+    max-height: 600px;
     overflow-y: auto;
 }
 table {
