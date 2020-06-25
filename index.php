@@ -13,126 +13,27 @@ if (!$USER->instructor) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Saving or updating a cell in the table
-    $contextId = isset($_POST["context"]) ? $_POST["context"] : false;
-    if (!$contextId) {
-        $_SESSION["error"] = "Error saving content, context not set properly.";
+    if (!isset($_POST["action"])) {
+        $_SESSION["error"] = "Unable to process that action. Please try again.";
         header('Location: ' . addSession('index.php'));
-        return;
     }
-    $weekNumber = isset($_POST["week"]) ? $_POST["week"] : false;
-    if (!$weekNumber) {
-        $_SESSION["error"] = "Error saving content, week not set properly.";
-        header('Location: ' . addSession('index.php?context='.$contextId));
-        return;
+    if ($_POST["action"] == "add") {
+        // Add new course plan and go to planner
+        $newStmt = "INSERT INTO {$p}course_planner_main (user_id, title) VALUES (:userId, :title);";
+        $arr = array(':userId' => $USER->id, ':title' => $_POST["title"]);
+        $PDOX->queryDie($newStmt, $arr);
+        $course_id = $PDOX->lastInsertId();
+        $_SESSION["success"] = "Course plan saved successfully.";
+        header('Location: ' . addSession('edit.php?course='.$course_id));
     }
-    $contentType = isset($_POST["contenttype"]) ? $_POST["contenttype"] : false;
-    if (!$contentType) {
-        $_SESSION["error"] = "Error saving content, content type not set properly.";
-        header('Location: ' . addSession('index.php?context='.$contextId));
-        return;
-    }
-    $content = isset($_POST["content"]) ? $_POST["content"] : "";
-    // Check for existing week row
-    $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE context_id = :context AND weeknumber = :weekNumber");
-    $weekStmt->execute(array(":context" => $contextId, ":weekNumber" => $weekNumber));
-    $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
-    if (!$planWeek) {
-        // No existing row so insert instead of update
-        switch ($contentType) {
-            case "Topic(s)":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, topics) 
-                            VALUES (:userId, :contextId, :weekNum, :content)");
-                $newStmt->execute(array(":userId" => $USER->id, ":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Readings":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, readings) 
-                            VALUES (:userId, :contextId, :weekNum, :content)");
-                $newStmt->execute(array(":userId" => $USER->id, ":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Videos":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, videos) 
-                            VALUES (:userId, :contextId, :weekNum, :content)");
-                $newStmt->execute(array(":userId" => $USER->id, ":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Activities":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, activities) 
-                            VALUES (:userId, :contextId, :weekNum, :content)");
-                $newStmt->execute(array(":userId" => $USER->id, ":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Assignments":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, assignments) 
-                            VALUES (:userId, :contextId, :weekNum, :content)");
-                $newStmt->execute(array(":userId" => $USER->id, ":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Tests/Exams":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, exams) 
-                            VALUES (:userId, :contextId, :weekNum, :content)");
-                $newStmt->execute(array(":userId" => $USER->id, ":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Discussions":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, discussions) 
-                            VALUES (:userId, :contextId, :weekNum, :content)");
-                $newStmt->execute(array(":userId" => $USER->id, ":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-        }
-    } else {
-        // Existing plan week record so run an update
-        switch ($contentType) {
-            case "Topic(s)":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set topics = :content WHERE context_id = :contextId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Readings":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set readings = :content WHERE context_id = :contextId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Videos":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set videos = :content WHERE context_id = :contextId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Activities":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set activities = :content WHERE context_id = :contextId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Assignments":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set assignments = :content WHERE context_id = :contextId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Tests/Exams":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set exams = :content WHERE context_id = :contextId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Discussions":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set discussions = :content WHERE context_id = :contextId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":contextId" => $contextId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-        }
-    }
-    $_SESSION["success"] = "Course content saved successfully.";
-    header('Location: ' . addSession('index.php?context='.$contextId));
-}
-
-if (isset($_GET["context"])) {
-    $context = $_GET["context"];
-    // Get the title for the context
-    $query = "SELECT title FROM {$p}lti_context WHERE context_id = :contextId;";
-    $arr = array(':contextId' => $context);
-    $contextData = $PDOX->rowDie($query, $arr);
-    $contextTitle = $contextData ? $contextData["title"] : "";
-} else {
-    $context = $CONTEXT->id;
-    $contextTitle = $CONTEXT->title;
 }
 
 $menu = new \Tsugi\UI\MenuSet();
-$menu->setHome('My Course Planner', 'index.php?context='.$context);
-$menu->addRight('<span class="fas fa-print" aria-hidden="true"></span> Print', "");
-
+$menu->setHome('My Course Planner', 'index.php');
 
 $OUTPUT->header();
 ?>
-<link rel="stylesheet" href="css/planner.css" type="text/css">
+    <link rel="stylesheet" href="css/planner.css" type="text/css">
 <?php
 $OUTPUT->bodyStart();
 
@@ -142,97 +43,94 @@ echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
 
-$OUTPUT->pageTitle($contextTitle, false, false);
 ?>
-<p class="lead">Click on a cell in the table to add content or click on the row title to edit all items in the row.</p>
-<div class="table-responsive">
-    <table class="table table-bordered table-condensed">
-        <thead>
-        <tr>
-            <th>Weeks</th>
-            <th>Topic(s)</th>
-            <th>Readings</th>
-            <th>Videos</th>
-            <th>Activities</th>
-            <th>Assignments</th>
-            <th>Tests/Exams</th>
-            <th>Discussions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
-        for ($weekNum = 1; $weekNum <= 16; $weekNum++) {
-            $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE context_id = :context AND weeknumber = :weekNumber");
-            $weekStmt->execute(array(":context" => $context, ":weekNumber" => $weekNum));
-            $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
-            echo '<tr>';
-            echo'<th data-week="'.$weekNum.'">'.getWeekInfo($weekNum).'</th>';
-            ?>
-            <td data-week="<?=$weekNum?>" data-contenttype="Topic(s)" <?=$planWeek && !empty($planWeek["topics"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["topics"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["topics"] : ""?></textarea>
-            </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Readings" <?=$planWeek && !empty($planWeek["readings"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["readings"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["readings"] : ""?></textarea>
-            </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Videos" <?=$planWeek && !empty($planWeek["videos"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["videos"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["videos"] : ""?></textarea>
-            </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Activities" <?=$planWeek && !empty($planWeek["activities"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["activities"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["activities"] : ""?></textarea>
-            </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Assignments" <?=$planWeek && !empty($planWeek["assignments"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["assignments"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["assignments"] : ""?></textarea>
-            </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Tests/Exams" <?=$planWeek && !empty($planWeek["exams"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["exams"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["exams"] : ""?></textarea>
-            </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Discussions" <?=$planWeek && !empty($planWeek["discussions"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["discussions"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["discussions"] : ""?></textarea>
-            </td>
+<div class="row" style="margin-top: 3.23rem;">
+    <div class="col-sm-5">
+        <h2 style="margin-top:0;">What is this tool?</h2>
+        <p>A, alias cumque deserunt ducimus et expedita inventore ipsa modi, nisi porro soluta. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias architecto consectetur consequatur, et excepturi illo iure labore laborum laudantium, magnam officiis optio provident sit tempore. Autem dolor eveniet qui!</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, alias cumque deserunt ducimus et expedita inventore ipsa modi, nisi porro soluta.</p>
+        <p class="h4 inline"><a href="">Watch a video about it <span class="fas fa-chevron-right" aria-hidden="true"></span></a></p>
+    </div>
+    <div class="col-sm-7">
+        <div class="planbox">
+            <a href="#addPlanModal" data-toggle="modal" class="btn btn-link pull-right"><span class="fas fa-plus" aria-hidden="true"></span> Add Course Plan</a>
+            <h3 style="margin:0;">My Course Plans</h3>
+            <p>Click on the title of a plan below to edit.</p>
             <?php
-            echo '</tr>';
-        }
-        ?>
-        </tbody>
-        <tfoot>
-        <tr>
-            <th>Weeks</th>
-            <th>Topic(s)</th>
-            <th>Readings</th>
-            <th>Videos</th>
-            <th>Activities</th>
-            <th>Assignments</th>
-            <th>Tests/Exams</th>
-            <th>Discussions</th>
-        </tr>
-        </tfoot>
-    </table>
+            $plansqry = $PDOX->prepare("SELECT * FROM {$p}course_planner_main WHERE user_id = :user_id ORDER BY title");
+            $plansqry->execute(array(":user_id" => $USER->id));
+            $plans = $plansqry->fetchAll(PDO::FETCH_ASSOC);
+            if (!$plans) {
+                echo '<p><em>No course plans created yet. Click on the "+ Add Course Plan" link in the top right to begin.</em></p>';
+            } else {
+                echo '<div class="list-group">';
+                foreach ($plans as $plan) {
+                    $sharestmt = $PDOX->prepare("SELECT count(*) as total FROM {$p}course_planner_share WHERE course_id = :course_id");
+                    $sharestmt->execute(array(":course_id" => $plan["course_id"]));
+                    $sharecount = $sharestmt->fetch(PDO::FETCH_ASSOC);
+                    echo '<div class="list-group-item h4">';
+                    echo '<a href="edit.php?course='.$plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$plan["title"].'</a> ';
+                    if ($sharecount["total"] > 1) {
+                        echo '<span class="text-muted" data-toggle="tooltip" title="Shared with multiple people"><span class="fas fa-users fa-fw" aria-hidden="true"></span></span>';
+                    } else if ($sharecount["total"] > 0) {
+                        echo '<span class="text-muted" data-toggle="tooltip" title="Shared with one other person"><span class="fas fa-user-friends fa-fw" aria-hidden="true"></span></span>';
+                    }
+                    echo '<div class="pull-right">
+                            <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                            <a href="share.php?course='.$plan["course_id"].'" class="plan-link" title="Share"><span class="fas fa-user-plus" aria-hidden="true"></span><span class="sr-only">Share</span></a>
+                            <a href="#" class="plan-link" title="Rename"><span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span></a>
+                            <a href="#" class="plan-link" title="Delete"><span class="far fa-trash-alt" aria-hidden="true"></span><span class="sr-only">Delete</span></a>
+                          </div>';
+                    echo '</div>';
+                }
+                echo '</div>';
+            }
+            $sharedplansqry = $PDOX->prepare("SELECT m.course_id as course_id, m.title as title, m.user_id as creator_id, s.can_edit as can_edit FROM
+                                                        {$p}course_planner_share s join {$p}course_planner_main m on s.course_id = m.course_id
+                                                        WHERE s.user_email = :email ORDER BY m.title");
+            $sharedplansqry->execute(array(":email" => $USER->email));
+            $shared_plans = $sharedplansqry->fetchAll(PDO::FETCH_ASSOC);
+            ?>
+            <hr />
+            <h4>Shared with me</h4>
+            <?php
+            if (!$shared_plans) {
+                echo '<p><em>No shared course plans yet.</em></p>';
+            } else {
+                echo '<div class="list-group">';
+                foreach ($shared_plans as $shared_plan) {
+                    echo '<div class="list-group-item h4">';
+                    if ($shared_plan["can_edit"]) {
+                        echo '<a href="edit.php?course='.$shared_plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</a> ';
+                    } else {
+                        echo '<span style="color: #4a5568;"><span class="fas fa-lock" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</span>';
+                    }
+                    echo '<div class="pull-right">
+                            <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                            <a href="unshare.php?course='.$shared_plan["course_id"].'&email='.$USER->email.'" onclick="return confirm(\'Are you sure you want to remove your access to this plan. The creator of the plan will need to grant you access to undo this action.\');" class="plan-link" title="Remove from my list"><span class="fas fa-user-slash" aria-hidden="true"></span><span class="sr-only">Remove from my list</span></a>
+                          </div>';
+                    echo '</div>';
+                }
+                echo '</div>';
+            }
+            ?>
+        </div>
+    </div>
 </div>
-    <div id="editModal" class="modal fade" role="dialog">
+    <div id="addPlanModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Editing <span id="editHeader"></span></h4>
+                    <h4 class="modal-title">Add New Course Plan</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Add quick details to this box about each item in this category for this week. Keep it brief and do not add full details or instructions for this content (e.g. Group Assignment 1, Dog Lecture Video, Quiz 2 on Pizza, etc.).</p>
                     <form class="form" method="post">
-                        <input type="hidden" name="context" value="<?=$context?>">
-                        <input type="hidden" id="editWeek" name="week" value="">
-                        <input type="hidden" id="editContentType" name="contenttype" value="">
+                        <input type="hidden" name="action" value="add">
                         <div class="form-group">
-                            <label for="editContent" id="editContentLabel"></label>
-                            <textarea class="form-control" rows="5" id="editContent" name="content"></textarea>
+                            <label for="planTitle" id="planTitleLabel">Course Plan Title</label>
+                            <input type="text" class="form-control" name="title" id="planTitle" value="" placeholder="e.g. TST 100 (Fall 2020)" required autofocus>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button> <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
                     </form>
@@ -246,109 +144,10 @@ echo '</div>';// end container
 
 $OUTPUT->footerStart();
 ?>
-    <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
     <script>
         $(document).ready(function(){
-            let theEditor;
-            ClassicEditor
-                .create( document.querySelector( '#editContent' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                        ]
-                    }
-                } )
-                .then (editor => { theEditor = editor; })
-                .catch( error => {
-                    console.error( error );
-                } );
             $('[data-toggle="tooltip"]').tooltip();
-            $("td").off("click").on("click", function() {
-
-
-                let week = $(this).data("week");
-                let contenttype = $(this).data("contenttype");
-                let content = $(this).find("textarea.content").val();
-                let contentlabel = "Week " + week + " - " + contenttype;
-
-                $("#editWeek").val(week);
-                $("#editContentType").val(contenttype);
-                theEditor.setData(content);
-
-                $("#editHeader").text(contentlabel);
-                $("#editContentLabel").text(contentlabel);
-
-                $("#editModal").modal("show");
-            });
-            $("th").off("click").on("click", function() {
-                // navigate to edit week
-                let week = $(this).data("week");
-                window.location.href = 'edit-week.php?context=<?=$context?>&week='+week+'&PHPSESSID=<?=$_GET["PHPSESSID"]?>'
-            });
         });
     </script>
 <?php
 $OUTPUT->footerEnd();
-
-function getWeekInfo($weekNum) {
-    $weekInfo = "";
-    switch ($weekNum) {
-        case 1:
-            $weekInfo = 'Week 1<br />(8/24-8/30)';
-            break;
-        case 2:
-            $weekInfo = 'Week 2<br />(8/31-9/6)';
-            break;
-        case 3:
-            $weekInfo = 'Week 3<br />(9/7-9/13)';
-            break;
-        case 4:
-            $weekInfo = 'Week 4<br />(9/14-9/20)';
-            break;
-        case 5:
-            $weekInfo = 'Week 5 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 9/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(9/21-9/27)';
-            break;
-        case 6:
-            $weekInfo = 'Week 6<br />(9/28-10/4)';
-            break;
-        case 7:
-            $weekInfo = 'Week 7<br />(10/5-10/11)';
-            break;
-        case 8:
-            $weekInfo = 'Week 8 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(10/12-10/18)';
-            break;
-        case 9:
-            $weekInfo = 'Week 9<br />(10/19-10/25)';
-            break;
-        case 10:
-            $weekInfo = 'Week 10<br />(10/26-11/1)';
-            break;
-        case 11:
-            $weekInfo = 'Week 11<br />(11/2-11/8)';
-            break;
-        case 12:
-            $weekInfo = 'Week 12<br />(11/9-11/15)';
-            break;
-        case 13:
-            $weekInfo = 'Week 13<br />(11/16-11/22)';
-            break;
-        case 14:
-            $weekInfo = 'Week 14 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 11/25-11/27"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(11/23-11/29)';
-            break;
-        case 15:
-            $weekInfo = 'Week 15<br />(11/30-12/6)';
-            break;
-        case 16:
-            $weekInfo = 'Week 16 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 12/8"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(12/7-12/13)';
-            break;
-    }
-    return $weekInfo;
-}

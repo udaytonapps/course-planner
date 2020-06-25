@@ -14,16 +14,16 @@ if (!$USER->instructor) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Saving or updating a cell in the table
-    $contextId = isset($_POST["context"]) ? $_POST["context"] : false;
-    if (!$contextId) {
-        $_SESSION["error"] = "Error saving content, context not set properly.";
+    $courseId = isset($_POST["course"]) ? $_POST["course"] : false;
+    if (!$courseId) {
+        $_SESSION["error"] = "Error saving content, course not set properly.";
         header('Location: ' . addSession('index.php'));
         return;
     }
     $weekNumber = isset($_POST["week"]) ? $_POST["week"] : false;
     if (!$weekNumber) {
         $_SESSION["error"] = "Error saving content, week not set properly.";
-        header('Location: ' . addSession('index.php?context='.$contextId));
+        header('Location: ' . addSession('edit.php?course='.$courseId));
         return;
     }
 
@@ -36,16 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $post_discussions = isset($_POST["discussions"]) ? $_POST["discussions"] : "";
 
     // Check for existing week row
-    $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE context_id = :context AND weeknumber = :weekNumber");
-    $weekStmt->execute(array(":context" => $contextId, ":weekNumber" => $weekNumber));
+    $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE course_id = :course AND weeknumber = :weekNumber");
+    $weekStmt->execute(array(":course" => $courseId, ":weekNumber" => $weekNumber));
     $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$planWeek) {
-        $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (user_id, context_id, weeknumber, topics, readings, videos, activities, assignments, exams, discussions) 
-                            VALUES (:userId, :contextId, :weekNum, :topics, :readings, :videos, :activities, :assignments, :exams, :discussions)");
+        $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (course_id, weeknumber, topics, readings, videos, activities, assignments, exams, discussions) 
+                            VALUES (:courseId, :weekNum, :topics, :readings, :videos, :activities, :assignments, :exams, :discussions)");
         $newStmt->execute(array(
-            ":userId" => $USER->id,
-            ":contextId" => $contextId,
+            ":courseId" => $courseId,
             ":weekNum" => $weekNumber,
             ":topics" => $post_topics,
             ":readings" => $post_readings,
@@ -59,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Existing plan week record so run an update
         $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set 
                                         topics = :topics, readings = :readings, videos = :videos, activities = :activities, assignments = :assignments, exams = :exams, discussions = :discussions
-                                        WHERE context_id = :contextId AND weeknumber = :weekNum");
+                                        WHERE course_id = :courseId AND weeknumber = :weekNum");
         $updateStmt->execute(array(
-            ":contextId" => $contextId,
+            ":courseId" => $courseId,
             ":weekNum" => $weekNumber,
             ":topics" => $post_topics,
             ":readings" => $post_readings,
@@ -73,34 +72,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ));
     }
     $_SESSION["success"] = "Course content saved successfully.";
-    header('Location: ' . addSession('index.php?context='.$contextId));
+    header('Location: ' . addSession('edit.php?course='.$courseId));
 }
 
-if (isset($_GET["context"])) {
-    $context = $_GET["context"];
-    // Get the title for the context
-    $query = "SELECT title FROM {$p}lti_context WHERE context_id = :contextId;";
-    $arr = array(':contextId' => $context);
-    $contextData = $PDOX->rowDie($query, $arr);
-    $contextTitle = $contextData ? $contextData["title"] : "";
+if (isset($_GET["course"])) {
+    $course = $_GET["course"];
+    // Get the title for the course
+    $query = "SELECT title FROM {$p}course_planner_main WHERE course_id = :courseId;";
+    $arr = array(':courseId' => $course);
+    $courseData = $PDOX->rowDie($query, $arr);
+    $courseTitle = $courseData ? $courseData["title"] : "";
 } else {
-    die("Error editing course planner for unknown context.");
+    $_SESSION["error"] = "Unable to edit course plan. Invalid id.";
+    header("Location: " . addSession("index.php"));
 }
 
 if (isset($_GET["week"]) && is_numeric($_GET["week"])) {
     $weekNum = $_GET["week"];
 } else {
     $_SESSION["error"] = "Unable to edit week or undefined week number.";
-    header('Location: ' . addSession('index.php?context='.$context));
+    header('Location: ' . addSession('edit.php?course='.$course));
 }
 
-$weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE context_id = :context AND weeknumber = :weekNumber");
-$weekStmt->execute(array(':context' => $context, ':weekNumber' => $weekNum));
+$weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE course_id = :course AND weeknumber = :weekNumber");
+$weekStmt->execute(array(':course' => $course, ':weekNumber' => $weekNum));
 $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
 
 $menu = new \Tsugi\UI\MenuSet();
-$menu->setHome('Course Planner', 'index.php?context='.$context);
-$menu->addRight('Exit Week Editor <span class="fas fa-sign-out-alt" aria-hidden="true"></span>', 'index.php?context='.$context);
+$menu->setHome('Course Planner', 'index.php');
+$menu->addRight('Exit Week Editor <span class="fas fa-sign-out-alt" aria-hidden="true"></span>', 'edit.php?course='.$course);
 
 $OUTPUT->header();
 ?>
@@ -114,7 +114,7 @@ echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
 
-$OUTPUT->pageTitle($contextTitle, false, false);
+$OUTPUT->pageTitle($courseTitle, false, false);
 ?>
 <h3>Editing Week <?=$weekNum?>
 <?php
@@ -128,7 +128,7 @@ if ($weekInfo) {
     <div class="col-sm-7">
         <form class="form" method="post">
             <input type="hidden" name="week" value="<?=$weekNum?>">
-            <input type="hidden" name="context" value="<?=$context?>">
+            <input type="hidden" name="course" value="<?=$course?>">
             <div class="form-group">
                 <label for="editTopics">Topic(s)</label>
                 <textarea id="editTopics" name="topics"><?=$planWeek ? $planWeek["topics"] : ""?></textarea>
@@ -157,7 +157,7 @@ if ($weekInfo) {
                 <label for="editDiscussions">Discussions</label>
                 <textarea id="editDiscussions" name="discussions"><?=$planWeek ? $planWeek["discussions"] : ""?></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button> <a href="index.php?context=<?=$context?>">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save</button> <a href="edit.php?course=<?=$course?>">Cancel</a>
         </form>
     </div>
 </div>
