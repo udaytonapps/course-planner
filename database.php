@@ -27,7 +27,7 @@ $DATABASE_INSTALL = array(
     exams           TEXT NULL,
     discussions     TEXT NULL,
 
-    CONSTRAINT `{$CFG->dbprefix}cp_ibfk_1`
+    CONSTRAINT `{$CFG->dbprefix}course_planner_fk_1`
         FOREIGN KEY (`course_id`)
         REFERENCES `{$CFG->dbprefix}course_planner_main` (`course_id`)
         ON DELETE CASCADE,
@@ -42,7 +42,7 @@ $DATABASE_INSTALL = array(
     user_email       VARCHAR(255) NOT NULL,
     can_edit        BOOL NOT NULL DEFAULT 0,
 
-    CONSTRAINT `{$CFG->dbprefix}cp_ibfk_2`
+    CONSTRAINT `{$CFG->dbprefix}course_planner_share_fk_1`
         FOREIGN KEY (`course_id`)
         REFERENCES `{$CFG->dbprefix}course_planner_main` (`course_id`)
         ON DELETE CASCADE,
