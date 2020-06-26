@@ -335,56 +335,56 @@ function getWeekInfo($weekNum) {
     $weekInfo = "";
     switch ($weekNum) {
         case 1:
-            $weekInfo = 'Week 1<br />(8/24-8/30)';
+            $weekInfo = 'Week 1<br /><span style="font-weight: normal;">(8/24-8/30)</span>';
             break;
         case 2:
-            $weekInfo = 'Week 2<br />(8/31-9/6)';
+            $weekInfo = 'Week 2<br /><span style="font-weight: normal;">(8/31-9/6)</span>';
             break;
         case 3:
-            $weekInfo = 'Week 3<br />(9/7-9/13)';
+            $weekInfo = 'Week 3<br /><span style="font-weight: normal;">(9/7-9/13)</span>';
             break;
         case 4:
-            $weekInfo = 'Week 4<br />(9/14-9/20)';
+            $weekInfo = 'Week 4<br /><span style="font-weight: normal;">(9/14-9/20)</span>';
             break;
         case 5:
             $weekInfo = 'Week 5 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 9/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(9/21-9/27)';
+                <br /><span style="font-weight: normal;">(9/21-9/27)</span>';
             break;
         case 6:
-            $weekInfo = 'Week 6<br />(9/28-10/4)';
+            $weekInfo = 'Week 6<br /><span style="font-weight: normal;">(9/28-10/4)</span>';
             break;
         case 7:
-            $weekInfo = 'Week 7<br />(10/5-10/11)';
+            $weekInfo = 'Week 7<br /><span style="font-weight: normal;">(10/5-10/11)</span>';
             break;
         case 8:
             $weekInfo = 'Week 8 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(10/12-10/18)';
+                <br /<span style="font-weight: normal;">(10/12-10/18)</span>';
             break;
         case 9:
-            $weekInfo = 'Week 9<br />(10/19-10/25)';
+            $weekInfo = 'Week 9<br /><span style="font-weight: normal;">(10/19-10/25)</span>';
             break;
         case 10:
-            $weekInfo = 'Week 10<br />(10/26-11/1)';
+            $weekInfo = 'Week 10<br /><span style="font-weight: normal;">(10/26-11/1)</span>';
             break;
         case 11:
-            $weekInfo = 'Week 11<br />(11/2-11/8)';
+            $weekInfo = 'Week 11<br /><span style="font-weight: normal;">(11/2-11/8)</span>';
             break;
         case 12:
-            $weekInfo = 'Week 12<br />(11/9-11/15)';
+            $weekInfo = 'Week 12<br /><span style="font-weight: normal;">(11/9-11/15)</span>';
             break;
         case 13:
-            $weekInfo = 'Week 13<br />(11/16-11/22)';
+            $weekInfo = 'Week 13<br /><span style="font-weight: normal;">(11/16-11/22)</span>';
             break;
         case 14:
             $weekInfo = 'Week 14 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 11/25-11/27"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(11/23-11/29)';
+                <br /><span style="font-weight: normal;">(11/23-11/29)</span>';
             break;
         case 15:
-            $weekInfo = 'Week 15<br />(11/30-12/6)';
+            $weekInfo = 'Week 15<br /><span style="font-weight: normal;">(11/30-12/6)</span>';
             break;
         case 16:
             $weekInfo = 'Week 16 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 12/8"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br />(12/7-12/13)';
+                <br /><span style="font-weight: normal;">(12/7-12/13)</span>';
             break;
     }
     return $weekInfo;
