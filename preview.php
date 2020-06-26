@@ -91,8 +91,6 @@ for ($weekNum = 1; $weekNum <= 16; $weekNum++) {
     <div><?=$planWeek ? $planWeek["assignments"] : ""?></div>
     <h4>Tests/Exams</h4>
     <div><?=$planWeek ? $planWeek["exams"] : ""?></div>
-    <h4>Discussions</h4>
-    <div><?=$planWeek ? $planWeek["discussions"] : ""?></div>
     <?php
 }
 ?>

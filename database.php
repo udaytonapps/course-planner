@@ -25,7 +25,6 @@ $DATABASE_INSTALL = array(
     activities      TEXT NULL,
     assignments     TEXT NULL,
     exams           TEXT NULL,
-    discussions     TEXT NULL,
 
     CONSTRAINT `{$CFG->dbprefix}course_planner_fk_1`
         FOREIGN KEY (`course_id`)
@@ -51,3 +50,17 @@ $DATABASE_INSTALL = array(
 	
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8")
 );
+
+$DATABASE_UPGRADE = function($oldversion) {
+    global $CFG, $PDOX;
+
+    // Add splash column
+    if ($PDOX->columnExists('discussions', "{$CFG->dbprefix}course_planner")) {
+        $sql = "ALTER TABLE {$CFG->dbprefix}course_planner DROP COLUMN discussions";
+        echo("Upgrading: " . $sql . "<br/>\n");
+        error_log("Upgrading: " . $sql);
+        $q = $PDOX->queryDie($sql);
+    }
+
+    return "202006261328";
+};

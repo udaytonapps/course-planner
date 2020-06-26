@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $post_activities = isset($_POST["activities"]) ? $_POST["activities"] : "";
     $post_assignments = isset($_POST["assignments"]) ? $_POST["assignments"] : "";
     $post_exams = isset($_POST["exams"]) ? $_POST["exams"] : "";
-    $post_discussions = isset($_POST["discussions"]) ? $_POST["discussions"] : "";
 
     // Check for existing week row
     $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE course_id = :course AND weeknumber = :weekNumber");
@@ -41,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$planWeek) {
-        $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (course_id, weeknumber, topics, readings, videos, activities, assignments, exams, discussions) 
-                            VALUES (:courseId, :weekNum, :topics, :readings, :videos, :activities, :assignments, :exams, :discussions)");
+        $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (course_id, weeknumber, topics, readings, videos, activities, assignments, exams) 
+                            VALUES (:courseId, :weekNum, :topics, :readings, :videos, :activities, :assignments, :exams)");
         $newStmt->execute(array(
             ":courseId" => $courseId,
             ":weekNum" => $weekNumber,
@@ -51,13 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ":videos" => $post_videos,
             ":activities" => $post_activities,
             ":assignments" => $post_assignments,
-            ":exams" => $post_exams,
-            ":discussions" => $post_discussions
+            ":exams" => $post_exams
         ));
     } else {
         // Existing plan week record so run an update
         $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set 
-                                        topics = :topics, readings = :readings, videos = :videos, activities = :activities, assignments = :assignments, exams = :exams, discussions = :discussions
+                                        topics = :topics, readings = :readings, videos = :videos, activities = :activities, assignments = :assignments, exams = :exams
                                         WHERE course_id = :courseId AND weeknumber = :weekNum");
         $updateStmt->execute(array(
             ":courseId" => $courseId,
@@ -67,8 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ":videos" => $post_videos,
             ":activities" => $post_activities,
             ":assignments" => $post_assignments,
-            ":exams" => $post_exams,
-            ":discussions" => $post_discussions
+            ":exams" => $post_exams
         ));
     }
     $_SESSION["success"] = "Course content saved successfully.";
@@ -152,10 +149,6 @@ if ($weekInfo) {
             <div class="form-group">
                 <label for="editExams">Test/Exams</label>
                 <textarea id="editExams" name="exams"><?=$planWeek ? $planWeek["exams"] : ""?></textarea>
-            </div>
-            <div class="form-group">
-                <label for="editDiscussions">Discussions</label>
-                <textarea id="editDiscussions" name="discussions"><?=$planWeek ? $planWeek["discussions"] : ""?></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Save</button> <a href="edit.php?course=<?=$course?>">Cancel</a>
         </form>
@@ -247,21 +240,6 @@ $OUTPUT->footerStart();
                 } );
             ClassicEditor
                 .create( document.querySelector( '#editExams' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                        ]
-                    }
-                } )
-                .catch( error => {
-                    console.error( error );
-                } );
-            ClassicEditor
-                .create( document.querySelector( '#editDiscussions' ), {
                     removePlugins: ['Link'],
                     toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
                     heading: {

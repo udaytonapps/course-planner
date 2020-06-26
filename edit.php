@@ -70,11 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             VALUES (:courseId, :weekNum, :content)");
                 $newStmt->execute(array(":courseId" => $courseId, ":weekNum" => $weekNumber, ":content" => $content));
                 break;
-            case "Discussions":
-                $newStmt = $PDOX->prepare("INSERT INTO {$p}course_planner (course_id, weeknumber, discussions) 
-                            VALUES (:courseId, :weekNum, :content)");
-                $newStmt->execute(array(":courseId" => $courseId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
         }
     } else {
         // Existing plan week record so run an update
@@ -101,10 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 break;
             case "Tests/Exams":
                 $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set exams = :content WHERE course_id = :courseId AND weeknumber = :weekNum");
-                $updateStmt->execute(array(":courseId" => $courseId, ":weekNum" => $weekNumber, ":content" => $content));
-                break;
-            case "Discussions":
-                $updateStmt = $PDOX->prepare("UPDATE {$p}course_planner set discussions = :content WHERE course_id = :courseId AND weeknumber = :weekNum");
                 $updateStmt->execute(array(":courseId" => $courseId, ":weekNum" => $weekNumber, ":content" => $content));
                 break;
         }
@@ -186,7 +177,6 @@ $OUTPUT->flashMessages();
             <th>Activities</th>
             <th>Assignments</th>
             <th>Tests/Exams</th>
-            <th>Discussions</th>
         </tr>
         </thead>
         <tbody>
@@ -222,10 +212,6 @@ $OUTPUT->flashMessages();
                 <span><?=$planWeek ? strip_tags($planWeek["exams"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["exams"] : ""?></textarea>
             </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Discussions" <?=$planWeek && !empty($planWeek["discussions"]) ? 'class="hasContent"' : ''?>>
-                <span><?=$planWeek ? strip_tags($planWeek["discussions"]) : ""?></span>
-                <textarea class="content"><?=$planWeek ? $planWeek["discussions"] : ""?></textarea>
-            </td>
             <?php
             echo '</tr>';
         }
@@ -240,7 +226,6 @@ $OUTPUT->flashMessages();
             <th>Activities</th>
             <th>Assignments</th>
             <th>Tests/Exams</th>
-            <th>Discussions</th>
         </tr>
         </tfoot>
     </table>
