@@ -1,9 +1,9 @@
 <?php
 
 $REGISTER_LTI2 = array(
-    "name" => "My Course Planner",
+    "name" => "Course Planner",
     "FontAwesome" => "fa-cubes",
-    "short_name" => "My Course Planner",
+    "short_name" => "Course Planner",
     "description" => "Plan your course's weekly modules.",
     "messages" => array("launch"),
     "privacy_level" => "anonymous",  // anonymous, name_only, public
