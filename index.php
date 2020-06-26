@@ -127,7 +127,7 @@ $OUTPUT->flashMessages();
                     }
                     echo '<div class="pull-right">
                             <a href="preview.php?course='.$shared_plan["course_id"].'" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
-                            <a href="unshare.php?course='.$shared_plan["course_id"].'&email='.$USER->email.'" onclick="return confirm(\'Are you sure you want to remove your access to this plan. The creator of the plan will need to grant you access to undo this action.\');" class="plan-link" title="Remove from my list"><span class="fas fa-user-slash" aria-hidden="true"></span><span class="sr-only">Remove from my list</span></a>
+                            <a href="unshare.php?course='.$shared_plan["course_id"].'&email='.urlencode($USER->email).'" onclick="return confirm(\'Are you sure you want to remove your access to this plan. The creator of the plan will need to grant you access to undo this action.\');" class="plan-link" title="Remove from my list"><span class="fas fa-user-slash" aria-hidden="true"></span><span class="sr-only">Remove from my list</span></a>
                           </div>';
                     echo '</div>';
                 }
