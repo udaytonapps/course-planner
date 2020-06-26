@@ -25,6 +25,7 @@ $DATABASE_INSTALL = array(
     activities      TEXT NULL,
     assignments     TEXT NULL,
     exams           TEXT NULL,
+    last_modified   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     CONSTRAINT `{$CFG->dbprefix}course_planner_fk_1`
         FOREIGN KEY (`course_id`)
@@ -54,7 +55,7 @@ $DATABASE_INSTALL = array(
 $DATABASE_UPGRADE = function($oldversion) {
     global $CFG, $PDOX;
 
-    // Add splash column
+    // Remove discussions column
     if ($PDOX->columnExists('discussions', "{$CFG->dbprefix}course_planner")) {
         $sql = "ALTER TABLE {$CFG->dbprefix}course_planner DROP COLUMN discussions";
         echo("Upgrading: " . $sql . "<br/>\n");
@@ -62,5 +63,13 @@ $DATABASE_UPGRADE = function($oldversion) {
         $q = $PDOX->queryDie($sql);
     }
 
-    return "202006261328";
+    // Add last modified column
+    if (!$PDOX->columnExists('last_modified', "{$CFG->dbprefix}course_planner")) {
+        $sql = "ALTER TABLE {$CFG->dbprefix}course_planner ADD last_modified DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
+        echo("Upgrading: " . $sql . "<br/>\n");
+        error_log("Upgrading: " . $sql);
+        $q = $PDOX->queryDie($sql);
+    }
+
+    return "202006261347";
 };
