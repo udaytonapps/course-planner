@@ -3,35 +3,35 @@ require_once "../config.php";
 
 use \Tsugi\Core\LTIX;
 
-// Retrieve the launch data if present
 $LAUNCH = LTIX::requireData();
 
 $p = $CFG->dbprefix;
 
-if ( $USER->instructor ) {
-    if (isset($_GET["course"]) && isset($_GET["email"])) {
-        $course = $_GET["course"];
-        $email = $_GET["email"];
-        $canEdit = isset($_GET["access"]) && (strcmp($_GET["access"], "edit") == 0) ? 1 : 0;
+if (!$USER->instructor) {
+    echo '<p>This tool is for instructors only.</p>';
+    return;
+}
 
-        $updateQry = $PDOX->prepare("UPDATE {$p}course_planner_share SET can_edit = :can_edit WHERE course_id = :course_id AND user_email = :user_email");
-        $updateQry->execute(array(":can_edit" => $canEdit, ":course_id" => $course, ":user_email" => $email));
+if (isset($_GET["course"]) && isset($_GET["email"])) {
+    $course = $_GET["course"];
+    $email = $_GET["email"];
+    $canEdit = isset($_GET["access"]) && (strcmp($_GET["access"], "edit") == 0) ? 1 : 0;
 
-        if ($canEdit == 1) {
-            $_SESSION["success"] = $email . " can now edit this course plan.";
-        } else {
-            $_SESSION["success"] = $email . "'s access has been set to read-only for this course plan.";
-        }
+    $updateQry = $PDOX->prepare("UPDATE {$p}course_planner_share SET can_edit = :can_edit WHERE course_id = :course_id AND user_email = :user_email");
+    $updateQry->execute(array(":can_edit" => $canEdit, ":course_id" => $course, ":user_email" => $email));
 
-        $back = isset($_GET["back"]) && $_GET["back"] == 'edit' ? "edit" : "index";
-
-        header("Location: " . addSession("share.php?course=".$course."&back=".$back));
-
+    if ($canEdit == 1) {
+        $_SESSION["success"] = $email . " can now edit this course plan.";
     } else {
-        $_SESSION["error"] = "Unable to remove sharing for course plan. Invalid id or email.";
-        header("Location: " . addSession("index.php"));
+        $_SESSION["success"] = $email . "'s access has been set to read-only for this course plan.";
     }
+
+    $back = isset($_GET["back"]) && $_GET["back"] == 'edit' ? "edit" : "index";
+
+    header("Location: " . addSession("share.php?course=".$course."&back=".$back));
+
 } else {
-    die("This tool is for instructors only.");
+    $_SESSION["error"] = "Unable to remove sharing for course plan. Invalid id or email.";
+    header("Location: " . addSession("index.php"));
 }
 
