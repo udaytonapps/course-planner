@@ -1,0 +1,20 @@
+body {
+    padding-top: 0 !important;
+    font-size: 11pt;
+}
+nav {
+    display: none;
+}
+h1, h2 {
+    line-height: 1.2em;
+    font-weight: 400;
+}
+h3, h4 {
+    font-weight: 600;
+}
+h1 > small, h2 > small, h3 > small, h4 > small {
+    font-weight: normal;
+}
+.print-icon {
+    display: none;
+}

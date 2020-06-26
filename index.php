@@ -76,7 +76,7 @@ $OUTPUT->flashMessages();
                         echo '<span class="text-muted" data-toggle="tooltip" title="Shared with one other person"><span class="fas fa-user-friends fa-fw" aria-hidden="true"></span></span>';
                     }
                     echo '<div class="pull-right">
-                            <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                            <a href="preview.php?course='.$plan["course_id"].'" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                             <a href="share.php?course='.$plan["course_id"].'" class="plan-link" title="Share"><span class="fas fa-user-plus" aria-hidden="true"></span><span class="sr-only">Share</span></a>
                             <a href="javascript:void(0);" class="plan-link rename-link" title="Rename" data-course="'.$plan["course_id"].'" data-plantitle="'.$plan["title"].'">
                                 <span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span>
@@ -108,7 +108,7 @@ $OUTPUT->flashMessages();
                         echo '<span style="color: #4a5568;"><span class="fas fa-lock" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</span>';
                     }
                     echo '<div class="pull-right">
-                            <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                            <a href="preview.php?course='.$shared_plan["course_id"].'" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                             <a href="unshare.php?course='.$shared_plan["course_id"].'&email='.$USER->email.'" onclick="return confirm(\'Are you sure you want to remove your access to this plan. The creator of the plan will need to grant you access to undo this action.\');" class="plan-link" title="Remove from my list"><span class="fas fa-user-slash" aria-hidden="true"></span><span class="sr-only">Remove from my list</span></a>
                           </div>';
                     echo '</div>';

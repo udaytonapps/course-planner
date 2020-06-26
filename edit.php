@@ -151,7 +151,7 @@ $OUTPUT->flashMessages();
             if ($courseData["user_id"] == $USER->id) {
                 // My course plan so show full menu
                 ?>
-                <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                <a href="preview.php?course=<?=$course?>&back=edit" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                 <a href="share.php?course=<?=$course?>&back=edit" class="plan-link" title="Share"><span class="fas fa-user-plus" aria-hidden="true"></span><span class="sr-only">Share</span></a>
                 <a href="#renameModal" data-toggle="modal" class="plan-link" title="Rename"><span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span></a>
                 <a href="deleteplan.php?course=<?=$course?>" onclick="return confirm('Are you sure you want to delete this course plan? Deleting a course plan also deletes it for everyone it was shared with. This can not be undone.');" class="plan-link" title="Delete"><span class="far fa-trash-alt" aria-hidden="true"></span><span class="sr-only">Delete</span></a>
@@ -159,7 +159,7 @@ $OUTPUT->flashMessages();
             } else {
                 // Shared with me so show smaller menu
                 ?>
-                <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                <a href="preview.php?course=<?=$course?>&back=edit" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                 <a href="unshare.php?course=<?=$course?>&email=<?=$USER->email?>" onclick="return confirm('Are you sure you want to remove your access to this plan. The creator of the plan will need to grant you access to undo this action.');" class="plan-link" title="Remove from my list"><span class="fas fa-user-slash" aria-hidden="true"></span><span class="sr-only">Remove from my list</span></a>
                 <?php
             }
