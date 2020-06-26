@@ -81,6 +81,7 @@ div.planbox {
     border: 1px solid #E2E8F0;
     border-radius: 5px;
     padding: 1rem;
+    margin-top: 2px;
 }
 div.list-group-item.h4 {
     background: #EBF8FF;

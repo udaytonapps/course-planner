@@ -44,25 +44,43 @@ echo '<div class="container-fluid">';
 $OUTPUT->flashMessages();
 
 ?>
-<div class="row" style="margin-top: 3.23rem;">
-    <div class="col-sm-5">
-        <h2 style="margin-top:0;">What is this tool?</h2>
-        <p>A, alias cumque deserunt ducimus et expedita inventore ipsa modi, nisi porro soluta. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias architecto consectetur consequatur, et excepturi illo iure labore laborum laudantium, magnam officiis optio provident sit tempore. Autem dolor eveniet qui!</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, alias cumque deserunt ducimus et expedita inventore ipsa modi, nisi porro soluta.</p>
-        <p class="h4 inline"><a href="">Watch a video about it <span class="fas fa-chevron-right" aria-hidden="true"></span></a></p>
+<div class="row" style="margin-top: 3.23rem;margin-bottom:2rem;">
+    <div class="col-sm-6">
+        <h2 style="margin-top:0;">My Course Planner</h2>
+        <blockquote>
+            <p>Plan your work and work your plan.</p>
+            <footer>Napoleon Hill</footer>
+        </blockquote>
+        <p>
+            Planning is an essential first step in constructing and delivering a quality course. It's also something that we typically want to rush through so that we can get to the 'building' only to have it bite us in the rear later. There are many high-level, key decisions that must be made when planning a course and most of them are interrelated.
+        </p>
+        <ul>
+            <li>What topics will I cover and what order should they be delivered in?</li>
+            <li>How many assignments should I have?</li>
+            <li>What readings or lecture materials will I need to provide if I'm going to ask them to participate in a discussion?</li>
+            <li>When will I deliver my first test?</li>
+            <li>How will the holiday schedule affect my course?</li>
+        </ul>
+        <p>
+            Course Planner is a simple utility tool designed to help faculty start laying out the key details of their course while being able to easily see how all of the pieces fit together. Faculty can create as many individual course plans as they want and each course plan can be shared with colleagues for easy collaboration.
+        </p>
+        <p>
+            The time you spend and the decisions you make in properly planning your course will make the actual building a breeze.
+        </p>
+        <p><strong>Happy Planning!</strong></p>
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-6">
         <div class="planbox">
             <a href="#addPlanModal" data-toggle="modal" class="btn btn-link pull-right"><span class="fas fa-plus" aria-hidden="true"></span> Add Course Plan</a>
             <h3 style="margin:0;">My Course Plans</h3>
-            <p>Click on the title of a plan below to edit.</p>
             <?php
             $plansqry = $PDOX->prepare("SELECT * FROM {$p}course_planner_main WHERE user_id = :user_id ORDER BY title");
             $plansqry->execute(array(":user_id" => $USER->id));
             $plans = $plansqry->fetchAll(PDO::FETCH_ASSOC);
             if (!$plans) {
-                echo '<p><em>No course plans created yet. Click on the "+ Add Course Plan" link in the top right to begin.</em></p>';
+                echo '<p style="clear:right;"><em>No course plans created yet.</em></p>';
             } else {
+                echo '<p>Click on the title of a plan below to edit.</p>';
                 echo '<div class="list-group">';
                 foreach ($plans as $plan) {
                     $sharestmt = $PDOX->prepare("SELECT count(*) as total FROM {$p}course_planner_share WHERE course_id = :course_id");
