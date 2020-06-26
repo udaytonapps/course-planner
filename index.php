@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $menu = new \Tsugi\UI\MenuSet();
-$menu->setHome('My Course Planner', 'index.php');
+$menu->setHome('Course Planner', 'index.php');
 
 $OUTPUT->header();
 ?>
@@ -46,7 +46,7 @@ $OUTPUT->flashMessages();
 ?>
 <div class="row" style="margin-top: 3.23rem;margin-bottom:2rem;">
     <div class="col-sm-6">
-        <h2 style="margin-top:0;">My Course Planner</h2>
+        <h2 style="margin-top:0;">Course Planner</h2>
         <blockquote>
             <p>Plan your work and work your plan.</p>
             <footer>Napoleon Hill</footer>

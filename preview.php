@@ -27,7 +27,7 @@ if (isset($_GET["course"])) {
 $back = isset($_GET["back"]) && $_GET["back"] == 'edit' ? "edit" : "index";
 
 $menu = new \Tsugi\UI\MenuSet();
-$menu->setHome('My Course Planner', 'index.php');
+$menu->setHome('Course Planner', 'index.php');
 if ($back == "index") {
     $menu->addRight('Exit Plan Preview <span class="fas fa-sign-out-alt" aria-hidden="true"></span>', 'index.php');
 } else {

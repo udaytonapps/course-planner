@@ -127,7 +127,7 @@ $access_level = $accessstmt->fetch(PDO::FETCH_ASSOC);
 $can_edit = ((!$access_level && $courseData["user_id"] == $USER->id) || $access_level["can_edit"]) ? true : false;
 
 $menu = new \Tsugi\UI\MenuSet();
-$menu->setHome('My Course Planner', 'index.php');
+$menu->setHome('Course Planner', 'index.php');
 $menu->addRight('Exit Plan Editor <span class="fas fa-sign-out-alt" aria-hidden="true"></span>', 'index.php');
 
 $OUTPUT->header();
@@ -196,7 +196,7 @@ if (!$can_edit) {
         }
         ?>
     </div>
-    <p>Click on a table cell to edit the content or click on a week header to edit all of the content for that week.</p>
+    <p>Double-click on a table cell to edit the contents or double-click on a week header to edit all of the content for that week. Single click any table cell to see the full contents.</p>
     <div class="table-responsive">
     <table class="table table-bordered table-condensed">
         <thead>
@@ -219,29 +219,35 @@ if (!$can_edit) {
             echo '<tr>';
             echo'<th data-week="'.$weekNum.'">'.getWeekInfo($weekNum).'</th>';
             ?>
-            <td data-week="<?=$weekNum?>" data-contenttype="Topic(s)" <?=$planWeek && !empty($planWeek["topics"]) ? 'class="hasContent"' : ''?>>
+            <td data-week="<?=$weekNum?>" data-contenttype="Topic(s)" class="<?=$planWeek && !empty($planWeek["topics"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["topics"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["topics"] : ""?></textarea>
+                <div class="cell-details"><?=$planWeek ? $planWeek["topics"] : ""?></div>
             </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Readings" <?=$planWeek && !empty($planWeek["readings"]) ? 'class="hasContent"' : ''?>>
+            <td data-week="<?=$weekNum?>" data-contenttype="Readings" class="<?=$planWeek && !empty($planWeek["readings"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["readings"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["readings"] : ""?></textarea>
+                <div class="cell-details"><?=$planWeek ? $planWeek["readings"] : ""?></div>
             </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Videos" <?=$planWeek && !empty($planWeek["videos"]) ? 'class="hasContent"' : ''?>>
+            <td data-week="<?=$weekNum?>" data-contenttype="Videos" class="<?=$planWeek && !empty($planWeek["videos"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["videos"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["videos"] : ""?></textarea>
+                <div class="cell-details"><?=$planWeek ? $planWeek["videos"] : ""?></div>
             </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Activities" <?=$planWeek && !empty($planWeek["activities"]) ? 'class="hasContent"' : ''?>>
+            <td data-week="<?=$weekNum?>" data-contenttype="Activities" class="<?=$planWeek && !empty($planWeek["activities"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["activities"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["activities"] : ""?></textarea>
+                <div class="cell-details"><?=$planWeek ? $planWeek["activities"] : ""?></div>
             </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Assignments" <?=$planWeek && !empty($planWeek["assignments"]) ? 'class="hasContent"' : ''?>>
+            <td data-week="<?=$weekNum?>" data-contenttype="Assignments" class="<?=$planWeek && !empty($planWeek["assignments"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["assignments"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["assignments"] : ""?></textarea>
+                <div class="cell-details"><?=$planWeek ? $planWeek["assignments"] : ""?></div>
             </td>
-            <td data-week="<?=$weekNum?>" data-contenttype="Tests/Exams" <?=$planWeek && !empty($planWeek["exams"]) ? 'class="hasContent"' : ''?>>
+            <td data-week="<?=$weekNum?>" data-contenttype="Tests/Exams" class="<?=$planWeek && !empty($planWeek["exams"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["exams"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["exams"] : ""?></textarea>
+                <div class="cell-details"><?=$planWeek ? $planWeek["exams"] : ""?></div>
             </td>
             <?php
             echo '</tr>';
@@ -335,10 +341,17 @@ $OUTPUT->footerStart();
                     console.error( error );
                 } );
             $('[data-toggle="tooltip"]').tooltip();
+            $("td.hasContent").off("click").on("click", function() {
+                $("div.cell-details").hide();
+                $(this).find("div.cell-details").fadeToggle();
+            });
+            $("td.empty").off("click").on("click", function() {
+                $("div.cell-details").hide();
+            });
             <?php
             if ($can_edit) {
                 ?>
-            $("td").off("click").on("click", function() {
+            $("td").off("dblclick").on("dblclick", function() {
 
 
                 let week = $(this).data("week");
@@ -355,7 +368,7 @@ $OUTPUT->footerStart();
 
                 $("#editModal").modal("show");
             });
-            $("th").off("click").on("click", function() {
+            $("th").off("dblclick").on("dblclick", function() {
                 // navigate to edit week
                 let week = $(this).data("week");
                 window.location.href = 'edit-week.php?course=<?=$course?>&week='+week+'&PHPSESSID=<?=$_GET["PHPSESSID"]?>'

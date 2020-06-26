@@ -44,12 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Notify elearning that there is a new answer
                 // the message
                 $access_string = $edit_access == 1 ? "edit" : "read-only";
-                $msg = "Hello!\n\nYou have been granted ".$access_string." access to a new course plan created by ".$USER->displayname." via the \"My Course Planner\" tool in Isidore. You will find the course plan in the \"Shared with me\" section on the main page of the tool.\n\nYou can access the course planning tool by logging into Isidore and clicking on \"My Course Planner\" in the left-hand menu from the Home page.\n\nHappy Planning!";
+                $msg = "Hello!\n\nYou have been granted ".$access_string." access to a new course plan created by ".$USER->displayname." via the \"Course Planner\" tool in Isidore. You will find the course plan in the \"Shared with me\" section on the main page of the tool.\n\nYou can access the course planning tool by logging into Isidore and clicking on \"Course Planner\" in the left-hand menu from the Home page.\n\nHappy Planning!";
 
                 // use wordwrap() if lines are longer than 70 characters
                 $msg = wordwrap($msg,70);
 
-                $headers  = "From: My Course Planner < no-reply@learningapps.udayton.edu >\n";
+                $headers  = "From: Course Planner < no-reply@learningapps.udayton.edu >\n";
 
                 // send email
                 mail($email, "You have been granted ".$access_string." access to a new course plan!", $msg, $headers);

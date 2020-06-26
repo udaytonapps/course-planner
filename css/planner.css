@@ -46,6 +46,24 @@ td:hover::after, td.hasContent:hover::after {
     width: 100%;
     z-index: -1;
 }
+div.cell-details {
+    display: none;
+    position: absolute;
+    top:70%;
+    right:0;
+    box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+            0 12.5px 10px rgba(0, 0, 0, 0.06),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+            0 100px 80px rgba(0, 0, 0, 0.12);
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 5px;
+    padding: 1rem;
+    z-index: 4;
+}
 form.edit-week {
     margin-bottom: 2rem;
 }
@@ -81,7 +99,6 @@ div.planbox {
     border: 1px solid #E2E8F0;
     border-radius: 5px;
     padding: 1rem;
-    margin-top: 2px;
 }
 div.list-group-item.h4 {
     background: #EBF8FF;
