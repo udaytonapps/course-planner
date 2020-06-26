@@ -120,6 +120,12 @@ $sharestmt = $PDOX->prepare("SELECT count(*) as total FROM {$p}course_planner_sh
 $sharestmt->execute(array(":course_id" => $course));
 $sharecount = $sharestmt->fetch(PDO::FETCH_ASSOC);
 
+$accessstmt = $PDOX->prepare("SELECT * FROM {$p}course_planner_share WHERE course_id = :course_id AND user_email = :user_email");
+$accessstmt->execute(array(":course_id" => $course, ":user_email" => $USER->email));
+$access_level = $accessstmt->fetch(PDO::FETCH_ASSOC);
+
+$can_edit = ((!$access_level && $courseData["user_id"] == $USER->id) || $access_level["can_edit"]) ? true : false;
+
 $menu = new \Tsugi\UI\MenuSet();
 $menu->setHome('My Course Planner', 'index.php');
 $menu->addRight('Exit Plan Editor <span class="fas fa-sign-out-alt" aria-hidden="true"></span>', 'index.php');
@@ -127,6 +133,27 @@ $menu->addRight('Exit Plan Editor <span class="fas fa-sign-out-alt" aria-hidden=
 $OUTPUT->header();
 ?>
 <link rel="stylesheet" href="css/planner.css" type="text/css">
+<style>
+    .alert.alert-warning.h4 {
+        position:absolute;
+        left: 0;
+        right:0;
+        text-align:center;
+        display:inline-block;
+        font-weight: 400;
+        margin:0 auto;
+        padding: 0 15px;
+    }
+    <?php
+    if (!$can_edit) {
+        ?>
+        tbody th:hover, tbody td:hover {
+            cursor: default !important;
+        }
+        <?php
+    }
+    ?>
+</style>
 <?php
 $OUTPUT->bodyStart();
 
@@ -135,6 +162,10 @@ $OUTPUT->topNav($menu);
 echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
+
+if (!$can_edit) {
+    echo '<div style="position:relative;width:100%;"><div class="alert alert-warning h4"><span class="fas fa-lock" aria-hidden="true"></span> You have read-only access to this course plan.</div></div>';
+}
 ?>
     <div id="toolTitle" class="h1">
         <div class="h3 inline pull-right">
@@ -304,6 +335,9 @@ $OUTPUT->footerStart();
                     console.error( error );
                 } );
             $('[data-toggle="tooltip"]').tooltip();
+            <?php
+            if ($can_edit) {
+                ?>
             $("td").off("click").on("click", function() {
 
 
@@ -326,6 +360,9 @@ $OUTPUT->footerStart();
                 let week = $(this).data("week");
                 window.location.href = 'edit-week.php?course=<?=$course?>&week='+week+'&PHPSESSID=<?=$_GET["PHPSESSID"]?>'
             });
+                <?php
+            }
+            ?>
         });
     </script>
 <?php

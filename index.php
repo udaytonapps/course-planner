@@ -119,14 +119,19 @@ $OUTPUT->flashMessages();
             } else {
                 echo '<div class="list-group">';
                 foreach ($shared_plans as $shared_plan) {
+                    // Get owner's name
+                    $displayname_qry = "SELECT displayname FROM {$p}lti_user WHERE user_id = :user_id;";
+                    $displayname_arr = array(':user_id' => $shared_plan["creator_id"]);
+                    $lti_user = $PDOX->rowDie($displayname_qry, $displayname_arr);
+                    $displayname = $lti_user ? $lti_user["displayname"] : "";
                     echo '<div class="list-group-item h4">';
-                    if ($shared_plan["can_edit"]) {
-                        echo '<a href="edit.php?course='.$shared_plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</a> ';
-                    } else {
-                        echo '<span style="color: #4a5568;"><span class="fas fa-lock" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</span>';
+                    echo '<a href="edit.php?course='.$shared_plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</a> ';
+                    echo '<span data-toggle="tooltip" title="Owner: '.$displayname.'" class="text-muted"><span class="fas fa-user-shield" aria-hidden="true"></span><span class="sr-only">Owner</span></span>';
+                    echo '<div class="pull-right">';
+                    if ($shared_plan["can_edit"] == 0) {
+                        echo '<span data-toggle="tooltip" title="Read-only access" class="fas fa-lock text-muted" style="padding-left:8px;" aria-hidden="true"></span><span class="sr-only">Read-only</span>';
                     }
-                    echo '<div class="pull-right">
-                            <a href="preview.php?course='.$shared_plan["course_id"].'" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                    echo '  <a href="preview.php?course='.$shared_plan["course_id"].'" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                             <a href="unshare.php?course='.$shared_plan["course_id"].'&email='.urlencode($USER->email).'" onclick="return confirm(\'Are you sure you want to remove your access to this plan. The creator of the plan will need to grant you access to undo this action.\');" class="plan-link" title="Remove from my list"><span class="fas fa-user-slash" aria-hidden="true"></span><span class="sr-only">Remove from my list</span></a>
                           </div>';
                     echo '</div>';

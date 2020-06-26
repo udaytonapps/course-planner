@@ -156,7 +156,7 @@ $OUTPUT->pageTitle($courseTitle, false, false);
                 echo '<div class="list-group-item h4"><span class="email" style="color: #4a5568;">'.$share["user_email"].'</span>';
                 echo '<div class="pull-right">';
                 if ($share["can_edit"]) {
-                    echo '<a href="toggleaccess.php?course='.$course.'&email='.urlencode($share["user_email"]).'&access=readonly&back='.$back.'" class="plan-link" title="User can edit this plan"><span class="fas fa-cube" aria-hidden="true"></span><span class="sr-only">Make read-only</span></a>';
+                    echo '<a href="toggleaccess.php?course='.$course.'&email='.urlencode($share["user_email"]).'&access=readonly&back='.$back.'" class="plan-link" title="User can edit this plan"><span class="fas fa-lock-open" aria-hidden="true"></span><span class="sr-only">Make read-only</span></a>';
                 } else {
                     echo '<a href="toggleaccess.php?course='.$course.'&email='.urlencode($share["user_email"]).'&access=edit&back='.$back.'" onclick="return confirm(\'Are you sure you want to grant this user the ability to edit this course plan?\');" class="plan-link" title="User has read-only access to this plan"><span class="fas fa-lock" aria-hidden="true"></span><span class="sr-only">Allow editing</span></a>';
                 }

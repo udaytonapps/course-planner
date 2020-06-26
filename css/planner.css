@@ -86,6 +86,9 @@ div.planbox {
 div.list-group-item.h4 {
     background: #EBF8FF;
 }
+.fas.text-muted, .far.text-muted {
+    color: #718096;
+}
 a.plan-link {
     padding-left: 8px;
     font-weight: normal;
