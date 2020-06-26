@@ -153,8 +153,8 @@ $OUTPUT->flashMessages();
                 ?>
                 <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                 <a href="share.php?course=<?=$course?>&back=edit" class="plan-link" title="Share"><span class="fas fa-user-plus" aria-hidden="true"></span><span class="sr-only">Share</span></a>
-                <a href="#" class="plan-link" title="Rename"><span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span></a>
-                <a href="#" class="plan-link" title="Delete"><span class="far fa-trash-alt" aria-hidden="true"></span><span class="sr-only">Delete</span></a>
+                <a href="#renameModal" data-toggle="modal" class="plan-link" title="Rename"><span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span></a>
+                <a href="deleteplan.php?course=<?=$course?>" onclick="return confirm('Are you sure you want to delete this course plan? Deleting a course plan also deletes it for everyone it was shared with. This can not be undone.');" class="plan-link" title="Delete"><span class="far fa-trash-alt" aria-hidden="true"></span><span class="sr-only">Delete</span></a>
                 <?php
             } else {
                 // Shared with me so show smaller menu
@@ -269,6 +269,28 @@ $OUTPUT->flashMessages();
                 </div>
             </div>
 
+        </div>
+    </div>
+    <div id="renameModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Rename <?=$courseTitle?></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="post" action="renameplan.php">
+                        <input type="hidden" name="course" value="<?=$course?>">
+                        <input type="hidden" name="back" value="edit">
+                        <div class="form-group">
+                            <label for="planTitle" id="planTitleLabel">Course Plan Title</label>
+                            <input type="text" class="form-control" name="title" id="planTitle" value="<?=$courseTitle?>" placeholder="e.g. TST 100 (Fall 2020)" required autofocus>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button> <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 <?php

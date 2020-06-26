@@ -126,7 +126,7 @@ if ($weekInfo) {
 </h3>
 <div class="row">
     <div class="col-sm-7">
-        <form class="form" method="post">
+        <form class="form edit-week" method="post">
             <input type="hidden" name="week" value="<?=$weekNum?>">
             <input type="hidden" name="course" value="<?=$course?>">
             <div class="form-group">

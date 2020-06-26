@@ -46,6 +46,9 @@ td:hover::after, td.hasContent:hover::after {
     width: 100%;
     z-index: -1;
 }
+form.edit-week {
+    margin-bottom: 2rem;
+}
 textarea.content {
     display:none;
 }

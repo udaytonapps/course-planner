@@ -78,8 +78,10 @@ $OUTPUT->flashMessages();
                     echo '<div class="pull-right">
                             <a href="#" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                             <a href="share.php?course='.$plan["course_id"].'" class="plan-link" title="Share"><span class="fas fa-user-plus" aria-hidden="true"></span><span class="sr-only">Share</span></a>
-                            <a href="#" class="plan-link" title="Rename"><span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span></a>
-                            <a href="#" class="plan-link" title="Delete"><span class="far fa-trash-alt" aria-hidden="true"></span><span class="sr-only">Delete</span></a>
+                            <a href="javascript:void(0);" class="plan-link rename-link" title="Rename" data-course="'.$plan["course_id"].'" data-plantitle="'.$plan["title"].'">
+                                <span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span>
+                            </a>
+                            <a href="deleteplan.php?course='.$plan["course_id"].'" onclick="return confirm(\'Are you sure you want to delete this course plan? Deleting a course plan also deletes it for everyone it was shared with. This can not be undone.\');" class="plan-link" title="Delete"><span class="far fa-trash-alt" aria-hidden="true"></span><span class="sr-only">Delete</span></a>
                           </div>';
                     echo '</div>';
                 }
@@ -139,6 +141,28 @@ $OUTPUT->flashMessages();
 
         </div>
     </div>
+    <div id="renameModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Rename <span id="renameHeader"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="post" action="renameplan.php">
+                        <input type="hidden" id="renameCourse" name="course" value="">
+                        <input type="hidden" name="back" value="index">
+                        <div class="form-group">
+                            <label for="planTitle" id="planTitleLabel">Course Plan Title</label>
+                            <input type="text" class="form-control" name="title" id="renameTitle" value="" placeholder="e.g. TST 100 (Fall 2020)" required autofocus>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button> <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php
 echo '</div>';// end container
 
@@ -147,6 +171,15 @@ $OUTPUT->footerStart();
     <script>
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
+            $("a.rename-link").off("click").on("click", function() {
+                let course = $(this).data("course");
+                let plantitle = $(this).data("plantitle");
+
+                $("#renameCourse").val(course);
+                $("#renameTitle").val(plantitle);
+
+                $("#renameModal").modal("show");
+            });
         });
     </script>
 <?php
