@@ -421,11 +421,10 @@ function getWeekInfo($weekNum) {
             $weekInfo = 'Week 7<br /><span style="font-weight: normal;">(10/5-10/11)</span>';
             break;
         case 8:
-            $weekInfo = 'Week 8 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br /<span style="font-weight: normal;">(10/12-10/18)</span>';
+            $weekInfo = 'Week 8<br /><span style="font-weight: normal;">(10/12-10/18)</span>';
             break;
         case 9:
-            $weekInfo = 'Week 9<br /><span style="font-weight: normal;">(10/19-10/25)</span>';
+            $weekInfo = 'Week 9<br /><a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a><span style="font-weight: normal;">(10/19-10/25)</span>';
             break;
         case 10:
             $weekInfo = 'Week 10<br /><span style="font-weight: normal;">(10/26-11/1)</span>';

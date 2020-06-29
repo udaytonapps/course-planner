@@ -367,10 +367,10 @@ function getWeekInfo($weekNum) {
             $weekInfo = '(10/5-10/11)';
             break;
         case 8:
-            $weekInfo = '(10/12-10/18) <a href="#"  data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle h5" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+            $weekInfo = '(10/12-10/18)';
             break;
         case 9:
-            $weekInfo = '(10/19-10/25)';
+            $weekInfo = '(10/19-10/25) <a href="#"  data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle h5" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
             break;
         case 10:
             $weekInfo = '(10/26-11/1)';
