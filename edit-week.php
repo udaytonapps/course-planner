@@ -165,90 +165,174 @@ $OUTPUT->footerStart();
             $('[data-toggle="tooltip"]').tooltip();
             ClassicEditor
                 .create( document.querySelector( '#editTopics' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'bulletedList',
+                            'numberedList',
+                            'link',
+                            'blockQuote',
+                            '|',
+                            'indent',
+                            'outdent',
+                            '|',
+                            'undo',
+                            'redo'
                         ]
-                    }
+                    },
+                    language: 'en'
                 } )
                 .catch( error => {
                     console.error( error );
                 } );
             ClassicEditor
                 .create( document.querySelector( '#editReadings' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'bulletedList',
+                            'numberedList',
+                            'link',
+                            'blockQuote',
+                            '|',
+                            'indent',
+                            'outdent',
+                            '|',
+                            'undo',
+                            'redo'
                         ]
-                    }
+                    },
+                    language: 'en'
                 } )
                 .catch( error => {
                     console.error( error );
                 } );
             ClassicEditor
                 .create( document.querySelector( '#editVideos' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'bulletedList',
+                            'numberedList',
+                            'link',
+                            'blockQuote',
+                            '|',
+                            'indent',
+                            'outdent',
+                            '|',
+                            'undo',
+                            'redo'
                         ]
-                    }
+                    },
+                    language: 'en'
                 } )
                 .catch( error => {
                     console.error( error );
                 } );
             ClassicEditor
                 .create( document.querySelector( '#editActivities' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'bulletedList',
+                            'numberedList',
+                            'link',
+                            'blockQuote',
+                            '|',
+                            'indent',
+                            'outdent',
+                            '|',
+                            'undo',
+                            'redo'
                         ]
-                    }
+                    },
+                    language: 'en'
                 } )
                 .catch( error => {
                     console.error( error );
                 } );
             ClassicEditor
                 .create( document.querySelector( '#editAssignments' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'bulletedList',
+                            'numberedList',
+                            'link',
+                            'blockQuote',
+                            '|',
+                            'indent',
+                            'outdent',
+                            '|',
+                            'undo',
+                            'redo'
                         ]
-                    }
+                    },
+                    language: 'en'
                 } )
                 .catch( error => {
                     console.error( error );
                 } );
             ClassicEditor
                 .create( document.querySelector( '#editExams' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'bulletedList',
+                            'numberedList',
+                            'link',
+                            'blockQuote',
+                            '|',
+                            'indent',
+                            'outdent',
+                            '|',
+                            'undo',
+                            'redo'
                         ]
-                    }
+                    },
+                    language: 'en'
                 } )
                 .catch( error => {
                     console.error( error );

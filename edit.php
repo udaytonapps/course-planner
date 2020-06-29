@@ -320,21 +320,35 @@ echo '</div>';// end container
 
 $OUTPUT->footerStart();
 ?>
-    <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+    <script src="ckeditor5/build/ckeditor.js"></script>
     <script>
         $(document).ready(function(){
             let theEditor;
             ClassicEditor
                 .create( document.querySelector( '#editContent' ), {
-                    removePlugins: ['Link'],
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'bulletedList',
+                            'numberedList',
+                            'link',
+                            'blockQuote',
+                            '|',
+                            'indent',
+                            'outdent',
+                            '|',
+                            'undo',
+                            'redo'
                         ]
-                    }
+                    },
+                    language: 'en'
                 } )
                 .then (editor => { theEditor = editor; })
                 .catch( error => {

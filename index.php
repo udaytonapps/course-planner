@@ -47,12 +47,8 @@ $OUTPUT->flashMessages();
 <div class="row" style="margin-top: 3.23rem;margin-bottom:2rem;">
     <div class="col-sm-6">
         <h2 style="margin-top:0;">Course Planner</h2>
-        <blockquote>
-            <p>Plan your work and work your plan.</p>
-            <footer>Napoleon Hill</footer>
-        </blockquote>
         <p>
-            Planning is an essential first step in constructing and delivering a quality course. It's also something that we typically want to rush through so that we can get to the 'building' only to have it bite us in the rear later. There are many high-level, key decisions that must be made when planning a course and most of them are interrelated.
+            Planning is an essential first step in constructing and delivering a quality course. There are many key decisions that must be made up front that inform how a course will ultimately be constructed.
         </p>
         <ul>
             <li>What topics will I cover and what order should they be delivered in?</li>
@@ -62,12 +58,8 @@ $OUTPUT->flashMessages();
             <li>How will the holiday schedule affect my course?</li>
         </ul>
         <p>
-            Course Planner is a simple utility tool designed to help faculty start laying out the key details of their course while being able to easily see how all of the pieces fit together. Faculty can create as many individual course plans as they want and each course plan can be shared with colleagues for easy collaboration.
+            Course Planner is a simple utility tool designed to help faculty start laying out the key elements of a course. It also provides a great way to visualize how all of the elements will fit together. Faculty can create as many individual course plans as they want and each course plan can be shared with colleagues for easy collaboration.
         </p>
-        <p>
-            The time you spend and the decisions you make in properly planning your course will make the actual building a breeze.
-        </p>
-        <p><strong>Happy Planning!</strong></p>
     </div>
     <div class="col-sm-6">
         <div class="planbox">
