@@ -380,7 +380,9 @@ $OUTPUT->footerStart();
                 $("#editHeader").text(contentlabel);
                 $("#editContentLabel").text(contentlabel);
 
-                $("#editModal").modal("show");
+                $("#editModal").modal("show", {
+                    focus: false
+                });
             });
             $("th").off("dblclick").on("dblclick", function() {
                 // navigate to edit week

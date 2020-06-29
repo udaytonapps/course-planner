@@ -111,3 +111,20 @@ a.plan-link {
     padding-left: 8px;
     font-weight: normal;
 }
+/*
+	We need to add this CSS custom property to the body instead of :root,
+	because of CSS specificity.
+*/
+body {
+    --ck-z-default: 100;
+    --ck-z-modal: calc( var(--ck-z-default) + 999 );
+}
+
+/*
+	Override Bootstrap's CSS.
+	Note: this won't be necessary once the following issue is fixed and released:
+	https://github.com/ckeditor/ckeditor5-theme-lark/issues/189
+*/
+.ck.ck-button {
+    -webkit-appearance: none;
+}
