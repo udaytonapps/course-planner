@@ -55,6 +55,9 @@ $OUTPUT->header();
     h1 > small, h2 > small, h3 > small, h4 > small {
         font-weight: normal;
     }
+    #theplan a[href] {
+        text-decoration: underline;
+    }
 </style>
 <?php
 $OUTPUT->bodyStart();
@@ -71,6 +74,7 @@ $OUTPUT->flashMessages();
     </a>
     <small>Course Plan</small><br /><?= $courseTitle ?>
 </h2>
+    <article id="theplan">
 <?php
 for ($weekNum = 1; $weekNum <= 16; $weekNum++) {
     $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE course_id = :course AND weeknumber = :weekNumber");
@@ -94,6 +98,7 @@ for ($weekNum = 1; $weekNum <= 16; $weekNum++) {
     <?php
 }
 ?>
+    </article>
 <?php
 echo '</div>';// end container
 
