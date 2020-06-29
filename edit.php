@@ -212,42 +212,49 @@ if (!$can_edit) {
         </thead>
         <tbody>
         <?php
+        $cell_override = '';
         for ($weekNum = 1; $weekNum <= 16; $weekNum++) {
             $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE course_id = :course AND weeknumber = :weekNumber");
             $weekStmt->execute(array(":course" => $course, ":weekNumber" => $weekNum));
             $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
+            if ($weekNum > 8) {
+                $cell_override = 'bottomhalf';
+            }
             echo '<tr>';
             echo'<th data-week="'.$weekNum.'">'.getWeekInfo($weekNum).'</th>';
             ?>
             <td data-week="<?=$weekNum?>" data-contenttype="Topic(s)" class="<?=$planWeek && !empty($planWeek["topics"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["topics"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["topics"] : ""?></textarea>
-                <div class="cell-details"><?=$planWeek ? $planWeek["topics"] : ""?></div>
+                <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["topics"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Readings" class="<?=$planWeek && !empty($planWeek["readings"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["readings"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["readings"] : ""?></textarea>
-                <div class="cell-details"><?=$planWeek ? $planWeek["readings"] : ""?></div>
+                <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["readings"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Videos" class="<?=$planWeek && !empty($planWeek["videos"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["videos"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["videos"] : ""?></textarea>
-                <div class="cell-details"><?=$planWeek ? $planWeek["videos"] : ""?></div>
+                <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["videos"] : ""?></div>
             </td>
+            <?php
+            $cell_override = $cell_override . ' righthalf';
+            ?>
             <td data-week="<?=$weekNum?>" data-contenttype="Activities" class="<?=$planWeek && !empty($planWeek["activities"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["activities"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["activities"] : ""?></textarea>
-                <div class="cell-details"><?=$planWeek ? $planWeek["activities"] : ""?></div>
+                <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["activities"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Assignments" class="<?=$planWeek && !empty($planWeek["assignments"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["assignments"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["assignments"] : ""?></textarea>
-                <div class="cell-details"><?=$planWeek ? $planWeek["assignments"] : ""?></div>
+                <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["assignments"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Tests/Exams" class="<?=$planWeek && !empty($planWeek["exams"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["exams"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["exams"] : ""?></textarea>
-                <div class="cell-details"><?=$planWeek ? $planWeek["exams"] : ""?></div>
+                <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["exams"] : ""?></div>
             </td>
             <?php
             echo '</tr>';

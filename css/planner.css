@@ -49,8 +49,7 @@ td:hover::after, td.hasContent:hover::after {
 div.cell-details {
     display: none;
     position: absolute;
-    top:70%;
-    right:0;
+    top:80%;
     box-shadow:
             0 2.8px 2.2px rgba(0, 0, 0, 0.034),
             0 6.7px 5.3px rgba(0, 0, 0, 0.048),
@@ -63,7 +62,15 @@ div.cell-details {
     border-radius: 5px;
     padding: 1rem;
     z-index: 4;
-    width: 325px;
+    width: 400px;
+    height: 250px;
+    overflow: auto;
+}
+div.cell-details.bottomhalf {
+    top: calc(-250px);
+}
+.righthalf {
+    left: calc(100% - 400px);
 }
 form.edit-week {
     margin-bottom: 2rem;
