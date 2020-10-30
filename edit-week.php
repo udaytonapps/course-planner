@@ -70,18 +70,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $_SESSION["success"] = "Course content saved successfully.";
     header('Location: ' . addSession('edit.php?course='.$courseId));
+    return;
 }
 
 if (isset($_GET["course"])) {
     $course = $_GET["course"];
     // Get the title for the course
-    $query = "SELECT title FROM {$p}course_planner_main WHERE course_id = :courseId;";
+    $query = "SELECT title, term FROM {$p}course_planner_main WHERE course_id = :courseId;";
     $arr = array(':courseId' => $course);
     $courseData = $PDOX->rowDie($query, $arr);
     $courseTitle = $courseData ? $courseData["title"] : "";
+    $courseTerm = $courseData ? (int) $courseData["term"] : 202080;
 } else {
     $_SESSION["error"] = "Unable to edit course plan. Invalid id.";
     header("Location: " . addSession("index.php"));
+    return;
 }
 
 if (isset($_GET["week"]) && is_numeric($_GET["week"])) {
@@ -89,6 +92,7 @@ if (isset($_GET["week"]) && is_numeric($_GET["week"])) {
 } else {
     $_SESSION["error"] = "Unable to edit week or undefined week number.";
     header('Location: ' . addSession('edit.php?course='.$course));
+    return;
 }
 
 $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE course_id = :course AND weeknumber = :weekNumber");
@@ -115,7 +119,7 @@ $OUTPUT->pageTitle($courseTitle, false, false);
 ?>
 <h3>Editing Week <?=$weekNum?>
 <?php
-$weekInfo = getWeekInfo($weekNum);
+$weekInfo = getWeekInfo($courseTerm, $weekNum);
 if ($weekInfo) {
     echo ' <span class="text-muted" style="font-weight:500;">'.$weekInfo.'</span>';
 }
@@ -342,56 +346,168 @@ $OUTPUT->footerStart();
 <?php
 $OUTPUT->footerEnd();
 
-function getWeekInfo($weekNum) {
+function getWeekInfo($term, $weekNum) {
     $weekInfo = "";
     switch ($weekNum) {
         case 1:
-            $weekInfo = '(8/24-8/30)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(8/24-8/30)';
+                    break;
+                case 202110:
+                    $weekInfo = '(1/19-1/24) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="MLK Day OFF, Mon, 1/18 / Classes start on Tues, 1/19"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+            }
             break;
         case 2:
-            $weekInfo = '(8/31-9/6)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(8/31-9/6)';
+                    break;
+                case 202110:
+                    $weekInfo = '(1/25-1/31)';
+                    break;
+            }
             break;
         case 3:
-            $weekInfo = '(9/7-9/13)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(9/7-9/13)';
+                    break;
+                case 202110:
+                    $weekInfo = '(2/1-2/7)';
+                    break;
+            }
             break;
         case 4:
-            $weekInfo = '(9/14-9/20)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(9/14-9/20)';
+                    break;
+                case 202110:
+                    $weekInfo = '(2/8-2/14)';
+                    break;
+            }
             break;
         case 5:
-            $weekInfo = '(9/21-9/27) <a href="#" data-toggle="tooltip" data-placement="top" title="No classes 9/23"><span class="fas fa-info-circle h5" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(9/21-9/27) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 9/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+                case 202110:
+                    $weekInfo = '(2/15-2/21)';
+                    break;
+            }
             break;
         case 6:
-            $weekInfo = '(9/28-10/4)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(9/28-10/4)';
+                    break;
+                case 202110:
+                    $weekInfo = '(2/22-2/28) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mini Break #1 - Tues, 2/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+            }
             break;
         case 7:
-            $weekInfo = '(10/5-10/11)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(10/5-10/11)';
+                    break;
+                case 202110:
+                    $weekInfo = '(3/1-3/7)';
+                    break;
+            }
             break;
         case 8:
-            $weekInfo = '(10/12-10/18)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(10/12-10/18)';
+                    break;
+                case 202110:
+                    $weekInfo = '(3/8-3/14)';
+                    break;
+            }
             break;
         case 9:
-            $weekInfo = '(10/19-10/25) <a href="#"  data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle h5" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(10/19-10/25) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+                case 202110:
+                    $weekInfo = '(3/15-3/21)';
+                    break;
+            }
             break;
         case 10:
-            $weekInfo = '(10/26-11/1)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(10/26-11/1)';
+                    break;
+                case 202110:
+                    $weekInfo = '(3/22-3/28)';
+                    break;
+            }
             break;
         case 11:
-            $weekInfo = '(11/2-11/8)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(11/2-11/8)';
+                    break;
+                case 202110:
+                    $weekInfo = '(3/29-4/4) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Good Friday Off, 4/2"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+            }
             break;
         case 12:
-            $weekInfo = '(11/9-11/15)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(11/9-11/15)';
+                    break;
+                case 202110:
+                    $weekInfo = '(4/5-4/11)';
+                    break;
+            }
             break;
         case 13:
-            $weekInfo = '(11/16-11/22)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(11/16-11/22)';
+                    break;
+                case 202110:
+                    $weekInfo = '(4/12-4/18) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mini Break #2 - Wed, 4/14"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+            }
             break;
         case 14:
-            $weekInfo = '(11/23-11/29) <a href="#"  data-toggle="tooltip" data-placement="top" title="No classes 11/25-11/27"><span class="fas fa-info-circle h5" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(11/23-11/29) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 11/25-11/27"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+                case 202110:
+                    $weekInfo = '(4/19-4/25) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Stander Symposium, Thurs, 4/22"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+            }
             break;
         case 15:
-            $weekInfo = '(11/30-12/6)';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(11/30-12/6)';
+                    break;
+                case 202110:
+                    $weekInfo = '(4/26-5/2) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Last Day of Classes - Fri, 4/30"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+            }
             break;
         case 16:
-            $weekInfo = '(12/7-12/13) <a href="#"  data-toggle="tooltip" data-placement="top" title="No classes 12/8"><span class="fas fa-info-circle h5" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = '(12/7-12/13) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 12/8"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+                case 202110:
+                    $weekInfo = '(5/3-5/7) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Finals Week (M-F)"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+            }
             break;
     }
     return $weekInfo;

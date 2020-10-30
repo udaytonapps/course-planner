@@ -10,6 +10,7 @@ $DATABASE_INSTALL = array(
     course_id      INTEGER NOT NULL AUTO_INCREMENT,
     user_id        INTEGER NOT NULL,
 	title          VARCHAR(255) NULL,
+	term           INTEGER NOT NULL DEFAULT 202080,
     
     PRIMARY KEY(course_id)
 	
@@ -71,5 +72,13 @@ $DATABASE_UPGRADE = function($oldversion) {
         $q = $PDOX->queryDie($sql);
     }
 
-    return "202006261347";
+    // Add term column
+    if (!$PDOX->columnExists('term', "{$CFG->dbprefix}course_planner_main")) {
+        $sql = "ALTER TABLE {$CFG->dbprefix}course_planner_main ADD term INTEGER NOT NULL DEFAULT 202080";
+        echo("Upgrading: " . $sql . "<br/>\n");
+        error_log("Upgrading: " . $sql);
+        $q = $PDOX->queryDie($sql);
+    }
+
+    return "202010301420";
 };

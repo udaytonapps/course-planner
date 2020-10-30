@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $_SESSION["success"] = "Course content saved successfully.";
     header('Location: ' . addSession('edit.php?course='.$courseId));
+    return;
 }
 
 if (isset($_GET["course"])) {
@@ -111,9 +112,11 @@ if (isset($_GET["course"])) {
     $arr = array(':courseId' => $course);
     $courseData = $PDOX->rowDie($query, $arr);
     $courseTitle = $courseData ? $courseData["title"] : "";
+    $courseTerm = $courseData ? (int) $courseData["term"] : 202080;
 } else {
     $_SESSION["error"] = "Unable to edit course plan. Invalid id.";
     header("Location: " . addSession("index.php"));
+    return;
 }
 
 $sharestmt = $PDOX->prepare("SELECT count(*) as total FROM {$p}course_planner_share WHERE course_id = :course_id");
@@ -175,6 +178,7 @@ if (!$can_edit) {
                 ?>
                 <a href="preview.php?course=<?=$course?>&back=edit" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                 <a href="share.php?course=<?=$course?>&back=edit" class="plan-link" title="Share"><span class="fas fa-user-plus" aria-hidden="true"></span><span class="sr-only">Share</span></a>
+                <a href="copyplan.php?course=<?=$course?>" class="plan-link" title="Copy"><span class="far fa-clone" aria-hidden="true"></span><span class="sr-only">Copy</span></a>
                 <a href="#renameModal" data-toggle="modal" class="plan-link" title="Rename"><span class="fas fa-pencil-alt" aria-hidden="true"></span><span class="sr-only">Rename</span></a>
                 <a href="deleteplan.php?course=<?=$course?>" onclick="return confirm('Are you sure you want to delete this course plan? Deleting a course plan also deletes it for everyone it was shared with. This can not be undone.');" class="plan-link" title="Delete"><span class="far fa-trash-alt" aria-hidden="true"></span><span class="sr-only">Delete</span></a>
                 <?php
@@ -182,6 +186,7 @@ if (!$can_edit) {
                 // Shared with me so show smaller menu
                 ?>
                 <a href="preview.php?course=<?=$course?>&back=edit" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
+                <a href="copyplan.php?course=<?=$course?>" class="plan-link" title="Copy"><span class="far fa-clone" aria-hidden="true"></span><span class="sr-only">Copy</span></a>
                 <a href="unshare.php?course=<?=$course?>&email=<?=urlencode($USER->email)?>" onclick="return confirm('Are you sure you want to remove your access to this plan. The creator of the plan will need to grant you access to undo this action.');" class="plan-link" title="Remove from my list"><span class="fas fa-user-slash" aria-hidden="true"></span><span class="sr-only">Remove from my list</span></a>
                 <?php
             }
@@ -221,7 +226,7 @@ if (!$can_edit) {
                 $cell_override = 'bottomhalf';
             }
             echo '<tr>';
-            echo'<th data-week="'.$weekNum.'">'.getWeekInfo($weekNum).'</th>';
+            echo'<th data-week="'.$weekNum.'">'.getWeekInfo($courseTerm, $weekNum).'</th>';
             ?>
             <td data-week="<?=$weekNum?>" data-contenttype="Topic(s)" class="<?=$planWeek && !empty($planWeek["topics"]) ? 'hasContent' : 'empty'?>">
                 <span><?=$planWeek ? strip_tags($planWeek["topics"]) : ""?></span>
@@ -306,7 +311,7 @@ if (!$can_edit) {
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Rename <?=$courseTitle?></h4>
+                    <h4 class="modal-title">Update <?=$courseTitle?></h4>
                 </div>
                 <div class="modal-body">
                     <form class="form" method="post" action="renameplan.php">
@@ -315,6 +320,13 @@ if (!$can_edit) {
                         <div class="form-group">
                             <label for="planTitle" id="planTitleLabel">Course Plan Title</label>
                             <input type="text" class="form-control" name="title" id="planTitle" value="<?=$courseTitle?>" placeholder="e.g. TST 100 (Fall 2020)" required autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label for="renameTerm">Term Schedule</label>
+                            <select id="renameTerm" name="term" class="form-control">
+                                <option value="202110" <?= $courseTerm == 202010 ? "selected" : ""?>>Spring 2021</option>
+                                <option value="202080" <?= $courseTerm == 202080 ? "selected" : ""?>>Fall 2020</option>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button> <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
                     </form>
@@ -404,60 +416,179 @@ $OUTPUT->footerStart();
 <?php
 $OUTPUT->footerEnd();
 
-function getWeekInfo($weekNum) {
+function getWeekInfo($term, $weekNum) {
     $weekInfo = "";
     switch ($weekNum) {
         case 1:
-            $weekInfo = 'Week 1<br /><span style="font-weight: normal;">(8/24-8/30)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 1<br /><span style="font-weight: normal;">(8/24-8/30)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 1 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="MLK Day OFF, Mon, 1/18 / Classes start on Tues, 1/19"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(1/19-1/24)</span>';
+                    break;
+            }
             break;
         case 2:
-            $weekInfo = 'Week 2<br /><span style="font-weight: normal;">(8/31-9/6)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 2<br /><span style="font-weight: normal;">(8/31-9/6)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 2<br /><span style="font-weight: normal;">(1/25-1/31)</span>';
+                    break;
+            }
             break;
         case 3:
-            $weekInfo = 'Week 3<br /><span style="font-weight: normal;">(9/7-9/13)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 3<br /><span style="font-weight: normal;">(9/7-9/13)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 3<br /><span style="font-weight: normal;">(2/1-2/7)</span>';
+                    break;
+            }
             break;
         case 4:
-            $weekInfo = 'Week 4<br /><span style="font-weight: normal;">(9/14-9/20)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 4<br /><span style="font-weight: normal;">(9/14-9/20)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 4<br /><span style="font-weight: normal;">(2/8-2/14)</span>';
+                    break;
+            }
             break;
         case 5:
-            $weekInfo = 'Week 5 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 9/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br /><span style="font-weight: normal;">(9/21-9/27)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 5 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 9/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(9/21-9/27)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 5<br /><span style="font-weight: normal;">(2/15-2/21)</span>';
+                    break;
+            }
             break;
         case 6:
-            $weekInfo = 'Week 6<br /><span style="font-weight: normal;">(9/28-10/4)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 6<br /><span style="font-weight: normal;">(9/28-10/4)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 6 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mini Break #1 - Tues, 2/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(2/22-2/28)</span>';
+                    break;
+            }
             break;
         case 7:
-            $weekInfo = 'Week 7<br /><span style="font-weight: normal;">(10/5-10/11)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 7<br /><span style="font-weight: normal;">(10/5-10/11)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 7<br /><span style="font-weight: normal;">(3/1-3/7)</span>';
+                    break;
+            }
             break;
         case 8:
-            $weekInfo = 'Week 8<br /><span style="font-weight: normal;">(10/12-10/18)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 8<br /><span style="font-weight: normal;">(10/12-10/18)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 8<br /><span style="font-weight: normal;">(3/8-3/14)</span>';
+                    break;
+            }
             break;
         case 9:
-            $weekInfo = 'Week 9 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br /><span style="font-weight: normal;">(10/19-10/25)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 9 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 10/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(10/19-10/25)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 9<br /><span style="font-weight: normal;">(3/15-3/21)</span>';
+                    break;
+            }
             break;
         case 10:
-            $weekInfo = 'Week 10<br /><span style="font-weight: normal;">(10/26-11/1)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 10<br /><span style="font-weight: normal;">(10/26-11/1)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 10<br /><span style="font-weight: normal;">(3/22-3/28)</span>';
+                    break;
+            }
             break;
         case 11:
-            $weekInfo = 'Week 11<br /><span style="font-weight: normal;">(11/2-11/8)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 11<br /><span style="font-weight: normal;">(11/2-11/8)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 11 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Good Friday Off, 4/2"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(3/29-4/4)</span>';
+                    break;
+            }
             break;
         case 12:
-            $weekInfo = 'Week 12<br /><span style="font-weight: normal;">(11/9-11/15)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 12<br /><span style="font-weight: normal;">(11/9-11/15)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 12<br /><span style="font-weight: normal;">(4/5-4/11)</span>';
+                    break;
+            }
             break;
         case 13:
-            $weekInfo = 'Week 13<br /><span style="font-weight: normal;">(11/16-11/22)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 13<br /><span style="font-weight: normal;">(11/16-11/22)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 13 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mini Break #2 - Wed, 4/14"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(4/12-4/18)</span>';
+                    break;
+            }
             break;
         case 14:
-            $weekInfo = 'Week 14 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 11/25-11/27"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br /><span style="font-weight: normal;">(11/23-11/29)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 14 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 11/25-11/27"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(11/23-11/29)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 14 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Stander Symposium, Thurs, 4/22"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(4/19-4/25)</span>';
+                    break;
+            }
             break;
         case 15:
-            $weekInfo = 'Week 15<br /><span style="font-weight: normal;">(11/30-12/6)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 15<br /><span style="font-weight: normal;">(11/30-12/6)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 15 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Last Day of Classes - Fri, 4/30"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(4/26-5/2)</span>';
+                    break;
+            }
             break;
         case 16:
-            $weekInfo = 'Week 16 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 12/8"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                <br /><span style="font-weight: normal;">(12/7-12/13)</span>';
+            switch($term) {
+                case 202080:
+                    $weekInfo = 'Week 16 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No classes 12/8"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(12/7-12/13)</span>';
+                    break;
+                case 202110:
+                    $weekInfo = 'Week 16 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Finals Week (M-F)"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(5/3-5/7)</span>';
+                    break;
+            }
             break;
     }
     return $weekInfo;

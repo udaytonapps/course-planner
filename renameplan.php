@@ -9,7 +9,7 @@ $LAUNCH = LTIX::requireData();
 $p = $CFG->dbprefix;
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-    $_SESSION["error"] = "Unable to rename course plan. Invalid request method.";
+    $_SESSION["error"] = "Unable to update course plan. Invalid request method.";
     header("Location: " . addSession("index.php"));
 }
 
@@ -27,11 +27,12 @@ if ( $USER->instructor ) {
         } else {
             // Found plan so check that it's the current user's and delete
             if ((strcmp($USER->id, $plan["user_id"]) == 0)) {
-                $editQry = $PDOX->prepare("UPDATE {$p}course_planner_main SET title = :title WHERE course_id = :course_id");
-                $editQry->execute(array(":course_id" => $course, ":title" => $_POST["title"]));
+                $termInt = is_numeric($_POST["term"]) ? (int) $_POST["term"] : 202080;
+                $editQry = $PDOX->prepare("UPDATE {$p}course_planner_main SET title = :title, term = :term WHERE course_id = :course_id");
+                $editQry->execute(array(":course_id" => $course, ":title" => $_POST["title"], ":term" => $termInt));
 
                 // Success
-                $_SESSION["success"] = "Course plan renamed successfully.";
+                $_SESSION["success"] = "Course plan updated successfully.";
 
                 if (isset($_POST["back"]) && $_POST["back"] == 'edit') {
                     header("Location: " . addSession("edit.php?course=".$course));
@@ -39,12 +40,12 @@ if ( $USER->instructor ) {
                     header("Location: " . addSession("index.php"));
                 }
             } else {
-                $_SESSION["error"] = "You can only rename course plans that you've created.";
+                $_SESSION["error"] = "You can only update course plans that you've created.";
                 header("Location: " . addSession("index.php"));
             }
         }
     } else {
-        $_SESSION["error"] = "Unable to rename course plan. Invalid id.";
+        $_SESSION["error"] = "Unable to update course plan. Invalid id.";
         header("Location: " . addSession("index.php"));
     }
 } else {
