@@ -34,7 +34,7 @@ if ( $USER->instructor ) {
                 if ($planWeek){
                     $copyWeekQry = $PDOX->prepare("INSERT INTO {$p}course_planner (course_id, weeknumber, topics, readings, videos, activities, assignments, exams, last_modified) 
                         VALUES (:course_id, :weeknumber, :topics, :readings, :videos, :activities, :assignments, :exams, :last_modified)");
-                    $copyMainQry->execute(array(
+                    $copyWeekQry->execute(array(
                         ":course_id" => $newPlanId,
                         ":weeknumber" => $planWeek["weeknumber"],
                         ":topics" => $planWeek["topics"],
