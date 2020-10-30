@@ -29,7 +29,7 @@ if ( $USER->instructor ) {
             // Now copy all of the weeks
             for ($weekNum = 1; $weekNum <= 16; $weekNum++) {
                 $weekStmt = $PDOX->prepare("SELECT * FROM {$p}course_planner WHERE course_id = :course AND weeknumber = :weekNumber");
-                $weekStmt->execute(array(":course" => $newPlanId, ":weekNumber" => $weekNum));
+                $weekStmt->execute(array(":course" => $plan["course_id"], ":weekNumber" => $weekNum));
                 $planWeek = $weekStmt->fetch(PDO::FETCH_ASSOC);
                 if ($planWeek){
                     $copyWeekQry = $PDOX->prepare("INSERT INTO {$p}course_planner (course_id, weeknumber, topics, readings, videos, activities, assignments, exams, last_modified) 
