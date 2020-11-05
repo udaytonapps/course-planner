@@ -115,6 +115,11 @@ echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
 
+if ($courseTerm == 202110) {
+    echo '<h3 class="term-title">Spring 2021</h3>';
+} else {
+    echo '<h3 class="term-title">Fall 2020</h3>';
+}
 $OUTPUT->pageTitle($courseTitle, false, false);
 ?>
 <h3>Editing Week <?=$weekNum?>

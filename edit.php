@@ -169,6 +169,11 @@ $OUTPUT->flashMessages();
 if (!$can_edit) {
     echo '<div style="position:relative;width:100%;"><div class="alert alert-warning h4"><span class="fas fa-lock" aria-hidden="true"></span> You have read-only access to this course plan.</div></div>';
 }
+if ($courseTerm == 202110) {
+    echo '<h3 class="term-title">Spring 2021</h3>';
+} else {
+    echo '<h3 class="term-title">Fall 2020</h3>';
+}
 ?>
     <div id="toolTitle" class="h1">
         <div class="h3 inline pull-right">

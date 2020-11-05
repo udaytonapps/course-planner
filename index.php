@@ -67,18 +67,31 @@ $OUTPUT->flashMessages();
             <a href="#addPlanModal" data-toggle="modal" class="btn btn-link pull-right"><span class="fas fa-plus" aria-hidden="true"></span> Add Course Plan</a>
             <h3 style="margin:0;">My Course Plans</h3>
             <?php
-            $plansqry = $PDOX->prepare("SELECT * FROM {$p}course_planner_main WHERE user_id = :user_id ORDER BY title");
+            $plansqry = $PDOX->prepare("SELECT * FROM {$p}course_planner_main WHERE user_id = :user_id ORDER BY term desc, title");
             $plansqry->execute(array(":user_id" => $USER->id));
             $plans = $plansqry->fetchAll(PDO::FETCH_ASSOC);
             if (!$plans) {
                 echo '<p style="clear:right;"><em>No course plans created yet.</em></p>';
             } else {
                 echo '<p>Click on the title of a plan below to edit.</p>';
-                echo '<div class="list-group">';
+                $current_term = -1;
                 foreach ($plans as $plan) {
                     $sharestmt = $PDOX->prepare("SELECT count(*) as total FROM {$p}course_planner_share WHERE course_id = :course_id");
                     $sharestmt->execute(array(":course_id" => $plan["course_id"]));
                     $sharecount = $sharestmt->fetch(PDO::FETCH_ASSOC);
+                    if ($current_term != $plan["term"]) {
+                        if ($current_term != -1) {
+                            echo '</div>'; // End list group if not first iteration
+                        }
+                        $current_term = $plan["term"];
+                        // New list group
+                        if ($current_term == 202110) {
+                            echo '<h5>Spring 2021</h5>';
+                        } else {
+                            echo '<h5>Fall 2020</h5>';
+                        }
+                        echo '<div class="list-group">';
+                    }
                     echo '<div class="list-group-item h4">';
                     echo '<a href="edit.php?course='.$plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$plan["title"].'</a> ';
                     if ($sharecount["total"] > 1) {
@@ -101,7 +114,7 @@ $OUTPUT->flashMessages();
             }
             $sharedplansqry = $PDOX->prepare("SELECT m.course_id as course_id, m.title as title, m.user_id as creator_id, s.can_edit as can_edit FROM
                                                         {$p}course_planner_share s join {$p}course_planner_main m on s.course_id = m.course_id
-                                                        WHERE s.user_email = :email ORDER BY m.title");
+                                                        WHERE s.user_email = :email ORDER BY m.term desc, m.title");
             $sharedplansqry->execute(array(":email" => $USER->email));
             $shared_plans = $sharedplansqry->fetchAll(PDO::FETCH_ASSOC);
             ?>
@@ -112,12 +125,26 @@ $OUTPUT->flashMessages();
                 echo '<p><em>No shared course plans yet.</em></p>';
             } else {
                 echo '<div class="list-group">';
+                $current_term = -1;
                 foreach ($shared_plans as $shared_plan) {
                     // Get owner's name
                     $displayname_qry = "SELECT displayname FROM {$p}lti_user WHERE user_id = :user_id;";
                     $displayname_arr = array(':user_id' => $shared_plan["creator_id"]);
                     $lti_user = $PDOX->rowDie($displayname_qry, $displayname_arr);
                     $displayname = $lti_user ? $lti_user["displayname"] : "";
+                    if ($current_term != $shared_plan["term"]) {
+                        if ($current_term != -1) {
+                            echo '</div>'; // End list group if not first iteration
+                        }
+                        $current_term = $shared_plan["term"];
+                        // New list group
+                        if ($current_term == 202110) {
+                            echo '<h5>Spring 2021</h5>';
+                        } else {
+                            echo '<h5>Fall 2020</h5>';
+                        }
+                        echo '<div class="list-group">';
+                    }
                     echo '<div class="list-group-item h4">';
                     echo '<a href="edit.php?course='.$shared_plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</a> ';
                     echo '<span data-toggle="tooltip" title="Owner: '.$displayname.'" class="text-muted"><span class="fas fa-user-shield" aria-hidden="true"></span><span class="sr-only">Owner</span></span>';

@@ -135,3 +135,10 @@ body {
 .ck.ck-button {
     -webkit-appearance: none;
 }
+.term-title {
+    font-weight: normal;
+    margin: 0;
+    position: absolute;
+    padding: 1rem 0 0;
+    color: #555;
+}

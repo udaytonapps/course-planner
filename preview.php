@@ -74,7 +74,7 @@ $OUTPUT->flashMessages();
     <a href="javascript:window.print();" class="print-icon pull-right btn btn-link">
         <span class="fas fa-print" aria-hidden="true"></span> Print
     </a>
-    <small>Course Plan</small><br /><?= $courseTitle ?>
+    <small>Course Plan - <?= $courseTerm == 202110 ? 'Spring 2021' : 'Fall 2020' ?></small><br /><?= $courseTitle ?>
 </h2>
     <article id="theplan">
 <?php

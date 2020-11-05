@@ -76,18 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $_SESSION["success"] = $success;
     header('Location: ' . addSession('share.php?course='.$courseId.'&back='.$back));
+    return;
 }
 
 if (isset($_GET["course"])) {
     $course = $_GET["course"];
     // Get the title for the course
-    $query = "SELECT title FROM {$p}course_planner_main WHERE course_id = :courseId;";
+    $query = "SELECT * FROM {$p}course_planner_main WHERE course_id = :courseId;";
     $arr = array(':courseId' => $course);
     $courseData = $PDOX->rowDie($query, $arr);
     $courseTitle = $courseData ? $courseData["title"] : "";
+    $courseTerm = $courseData ? $courseData["term"] : 202080;
 } else {
     $_SESSION["error"] = "Unable to share course plan. Invalid id.";
     header("Location: " . addSession("index.php"));
+    return;
 }
 
 $sharesqry = $PDOX->prepare("SELECT * FROM {$p}course_planner_share WHERE course_id = :course_id ORDER BY user_email");
@@ -115,7 +118,11 @@ $OUTPUT->topNav($menu);
 echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
-
+if ($courseTerm == 202110) {
+    echo '<h3 class="term-title">Spring 2021</h3>';
+} else {
+    echo '<h3 class="term-title">Fall 2020</h3>';
+}
 $OUTPUT->pageTitle($courseTitle, false, false);
 ?>
 <div class="row">
