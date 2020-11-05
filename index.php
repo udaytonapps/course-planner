@@ -112,7 +112,7 @@ $OUTPUT->flashMessages();
                 }
                 echo '</div>';
             }
-            $sharedplansqry = $PDOX->prepare("SELECT m.course_id as course_id, m.title as title, m.user_id as creator_id, s.can_edit as can_edit FROM
+            $sharedplansqry = $PDOX->prepare("SELECT m.course_id as course_id, m.title as title, m.user_id as creator_id, s.can_edit as can_edit, m.term as term FROM
                                                         {$p}course_planner_share s join {$p}course_planner_main m on s.course_id = m.course_id
                                                         WHERE s.user_email = :email ORDER BY m.term desc, m.title");
             $sharedplansqry->execute(array(":email" => $USER->email));
