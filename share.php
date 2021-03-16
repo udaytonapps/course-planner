@@ -118,11 +118,24 @@ $OUTPUT->topNav($menu);
 echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
-if ($courseTerm == 202110) {
-    echo '<h3 class="term-title">Spring 2021</h3>';
-} else {
-    echo '<h3 class="term-title">Fall 2020</h3>';
+switch ($courseTerm) {
+    case 202110:
+        $termTitle = "Spring 2021";
+        break;
+    case 2021531:
+        $termTitle = "Summer 2021 - First Session";
+        break;
+    case 2021532:
+        $termTitle = "Summer 2021 - Second Session";
+        break;
+    case 2021533:
+        $termTitle = "Summer 2021 - Full Third Term";
+        break;
+    default:
+        $termTitle = "Fall 2020";
+        break;
 }
+echo '<h3 class="term-title">'.$termTitle.'</h3>';
 $OUTPUT->pageTitle($courseTitle, false, false);
 ?>
 <div class="row">

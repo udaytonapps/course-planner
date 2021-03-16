@@ -115,11 +115,25 @@ echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
 
-if ($courseTerm == 202110) {
-    echo '<h3 class="term-title">Spring 2021</h3>';
-} else {
-    echo '<h3 class="term-title">Fall 2020</h3>';
+switch ($courseTerm) {
+    case 202110:
+        $termTitle = "Spring 2021";
+        break;
+    case 2021531:
+        $termTitle = "Summer 2021 - First Session";
+        break;
+    case 2021532:
+        $termTitle = "Summer 2021 - Second Session";
+        break;
+    case 2021533:
+        $termTitle = "Summer 2021 - Full Third Term";
+        break;
+    default:
+        $termTitle = "Fall 2020";
+        break;
 }
+echo '<h3 class="term-title">'.$termTitle.'</h3>';
+
 $OUTPUT->pageTitle($courseTitle, false, false);
 ?>
 <h3>Editing Week <?=$weekNum?>
@@ -362,6 +376,13 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(1/19-1/24) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="MLK Day OFF, Mon, 1/18 / Classes start on Tues, 1/19"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
                     break;
+                case 2021531:
+                case 2021533:
+                    $weekInfo = '(5/17 - 5/23)';
+                    break;
+                case 2021532:
+                    $weekInfo = '(6/28 - 7/4)';
+                    break;
             }
             break;
         case 2:
@@ -371,6 +392,13 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(1/25-1/31)';
+                    break;
+                case 2021531:
+                case 2021533:
+                    $weekInfo = '(5/24 - 5/30)';
+                    break;
+                case 2021532:
+                    $weekInfo = '(7/5-7/11) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No 7/5 in observance of Independence Day"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
                     break;
             }
             break;
@@ -382,6 +410,13 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(2/1-2/7)';
                     break;
+                case 2021531:
+                case 2021533:
+                    $weekInfo = '(5/31-6/6) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Memorial Day Off, 5/31"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+                case 2021532:
+                    $weekInfo = '(7/12 - 7/18)';
+                    break;
             }
             break;
         case 4:
@@ -391,6 +426,13 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(2/8-2/14)';
+                    break;
+                case 2021531:
+                case 2021533:
+                    $weekInfo = '(6/7 - 6/13)';
+                    break;
+                case 2021532:
+                    $weekInfo = '(7/19 - 7/25)';
                     break;
             }
             break;
@@ -402,6 +444,13 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(2/15-2/21)';
                     break;
+                case 2021531:
+                case 2021533:
+                    $weekInfo = '(6/14 - 6/20)';
+                    break;
+                case 2021532:
+                    $weekInfo = '(7/26 - 8/1)';
+                    break;
             }
             break;
         case 6:
@@ -411,6 +460,13 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(2/22-2/28) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mini Break #1 - Tues, 2/23"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+                case 2021531:
+                case 2021533:
+                    $weekInfo = '(6/21 - 6/26)';
+                    break;
+                case 2021532:
+                    $weekInfo = '(8/2 - 8/7)';
                     break;
             }
             break;
@@ -422,6 +478,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(3/1-3/7)';
                     break;
+                case 2021533:
+                    $weekInfo = '(6/28 - 7/4)';
+                    break;
             }
             break;
         case 8:
@@ -431,6 +490,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(3/8-3/14)';
+                    break;
+                case 2021533:
+                    $weekInfo = '(7/5-7/11) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="No 7/5 in observance of Independence Day"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
                     break;
             }
             break;
@@ -442,6 +504,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(3/15-3/21)';
                     break;
+                case 2021533:
+                    $weekInfo = '(7/12 - 7/18)';
+                    break;
             }
             break;
         case 10:
@@ -451,6 +516,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(3/22-3/28)';
+                    break;
+                case 2021533:
+                    $weekInfo = '(7/19 - 7/25)';
                     break;
             }
             break;
@@ -462,6 +530,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(3/29-4/4) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Good Friday Off, 4/2"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
                     break;
+                case 2021533:
+                    $weekInfo = '(7/26 - 8/1)';
+                    break;
             }
             break;
         case 12:
@@ -471,6 +542,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(4/5-4/11)';
+                    break;
+                case 2021533:
+                    $weekInfo = '(8/2 - 8/7)';
                     break;
             }
             break;

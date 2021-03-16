@@ -85,11 +85,24 @@ $OUTPUT->flashMessages();
                         }
                         $current_term = $plan["term"];
                         // New list group
-                        if ($current_term == 202110) {
-                            echo '<h5>Spring 2021</h5>';
-                        } else {
-                            echo '<h5>Fall 2020</h5>';
+                        switch ($current_term) {
+                            case 202110:
+                                $termTitle = "Spring 2021";
+                                break;
+                            case 2021531:
+                                $termTitle = "Summer 2021 - First Session";
+                                break;
+                            case 2021532:
+                                $termTitle = "Summer 2021 - Second Session";
+                                break;
+                            case 2021533:
+                                $termTitle = "Summer 2021 - Full Third Term";
+                                break;
+                            default:
+                                $termTitle = "Fall 2020";
+                                break;
                         }
+                        echo '<h5>'.$termTitle.'</h5>';
                         echo '<div class="list-group">';
                     }
                     echo '<div class="list-group-item h4">';
@@ -138,11 +151,24 @@ $OUTPUT->flashMessages();
                         }
                         $current_term = $shared_plan["term"];
                         // New list group
-                        if ($current_term == 202110) {
-                            echo '<h5>Spring 2021</h5>';
-                        } else {
-                            echo '<h5>Fall 2020</h5>';
+                        switch ($current_term) {
+                            case 202110:
+                                $termTitle = "Spring 2021";
+                                break;
+                            case 2021531:
+                                $termTitle = "Summer 2021 - First Session";
+                                break;
+                            case 2021532:
+                                $termTitle = "Summer 2021 - Second Session";
+                                break;
+                            case 2021533:
+                                $termTitle = "Summer 2021 - Full Third Term";
+                                break;
+                            default:
+                                $termTitle = "Fall 2020";
+                                break;
                         }
+                        echo '<h5>'.$termTitle.'</h5>';
                         echo '<div class="list-group">';
                     }
                     echo '<div class="list-group-item h4">';
@@ -182,6 +208,9 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="term">Term Schedule</label>
                             <select id="term" name="term" class="form-control">
+                                <option value="2021533">Summer 2021 - Full Third Term</option>
+                                <option value="2021531">Summer 2021 - First Session</option>
+                                <option value="2021532">Summer 2021 - Second Session</option>
                                 <option value="202110">Spring 2021</option>
                                 <option value="202080">Fall 2020</option>
                             </select>
@@ -212,6 +241,9 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="renameTerm">Term Schedule</label>
                             <select id="renameTerm" name="term" class="form-control">
+                                <option value="2021533">Summer 2021 - Full Third Term</option>
+                                <option value="2021531">Summer 2021 - First Session</option>
+                                <option value="2021532">Summer 2021 - Second Session</option>
                                 <option value="202110">Spring 2021</option>
                                 <option value="202080">Fall 2020</option>
                             </select>
