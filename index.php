@@ -98,6 +98,9 @@ $OUTPUT->flashMessages();
                             case 2021533:
                                 $termTitle = "Summer 2021 - Full Third Term";
                                 break;
+                            case 202180:
+                                $termTitle = "Fall 2021";
+                                break;
                             default:
                                 $termTitle = "Fall 2020";
                                 break;
@@ -164,6 +167,9 @@ $OUTPUT->flashMessages();
                             case 2021533:
                                 $termTitle = "Summer 2021 - Full Third Term";
                                 break;
+                            case 202180:
+                                $termTitle = "Fall 2021";
+                                break;
                             default:
                                 $termTitle = "Fall 2020";
                                 break;
@@ -208,6 +214,7 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="term">Term Schedule</label>
                             <select id="term" name="term" class="form-control">
+                                <option value="202180">Fall 2021</option>
                                 <option value="2021533">Summer 2021 - Full Third Term</option>
                                 <option value="2021531">Summer 2021 - First Session</option>
                                 <option value="2021532">Summer 2021 - Second Session</option>
@@ -241,6 +248,7 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="renameTerm">Term Schedule</label>
                             <select id="renameTerm" name="term" class="form-control">
+                                <option value="202180">Fall 2021</option>
                                 <option value="2021533">Summer 2021 - Full Third Term</option>
                                 <option value="2021531">Summer 2021 - First Session</option>
                                 <option value="2021532">Summer 2021 - Second Session</option>

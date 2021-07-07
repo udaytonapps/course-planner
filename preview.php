@@ -82,6 +82,9 @@ switch ($courseTerm) {
     case 2021533:
         $termTitle = "Summer 2021 - Full Third Term";
         break;
+    case 202180:
+        $termTitle = "Fall 2021";
+        break;
     default:
         $termTitle = "Fall 2020";
         break;
@@ -159,6 +162,9 @@ function getWeekInfo($term, $weekNum) {
                 case 2021532:
                     $weekInfo = '(6/28 - 7/4)';
                     break;
+                case 202180:
+                    $weekInfo = '(8/23-8/29)';
+                    break;
             }
             break;
         case 2:
@@ -175,6 +181,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 2021532:
                     $weekInfo = '(7/5-7/11) <small>No 7/5 in observance of Independence Day</small>';
+                    break;
+                case 202180:
+                    $weekInfo = '(8/30-9/5)';
                     break;
             }
             break;
@@ -193,6 +202,9 @@ function getWeekInfo($term, $weekNum) {
                 case 2021532:
                     $weekInfo = '(7/12 - 7/18)';
                     break;
+                case 202180:
+                    $weekInfo = '(9/6-9/12) <small>Labor Day, 9/6</small>';
+                    break;
             }
             break;
         case 4:
@@ -209,6 +221,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 2021532:
                     $weekInfo = '(7/19 - 7/25)';
+                    break;
+                case 202180:
+                    $weekInfo = '(9/13-9/19)';
                     break;
             }
             break;
@@ -227,6 +242,9 @@ function getWeekInfo($term, $weekNum) {
                 case 2021532:
                     $weekInfo = '(7/26 - 8/1)';
                     break;
+                case 202180:
+                    $weekInfo = '(9/20-9/26)';
+                    break;
             }
             break;
         case 6:
@@ -244,6 +262,9 @@ function getWeekInfo($term, $weekNum) {
                 case 2021532:
                     $weekInfo = '(8/2 - 8/7)';
                     break;
+                case 202180:
+                    $weekInfo = '(9/27-10/3)';
+                    break;
             }
             break;
         case 7:
@@ -256,6 +277,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 2021533:
                     $weekInfo = '(6/28 - 7/4)';
+                    break;
+                case 202180:
+                    $weekInfo = '(10/4-10/10) <small>Mid-Term Break, 10/7-10/8"></small>';
                     break;
             }
             break;
@@ -270,6 +294,9 @@ function getWeekInfo($term, $weekNum) {
                 case 2021533:
                     $weekInfo = '(7/5-7/11) <small>No 7/5 in observance of Independence Day</small>';
                     break;
+                case 202180:
+                    $weekInfo = '(10/11-10/17)';
+                    break;
             }
             break;
         case 9:
@@ -282,6 +309,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 2021533:
                     $weekInfo = '(7/12 - 7/18)';
+                    break;
+                case 202180:
+                    $weekInfo = '(10/18-10/24)';
                     break;
             }
             break;
@@ -296,6 +326,9 @@ function getWeekInfo($term, $weekNum) {
                 case 2021533:
                     $weekInfo = '(7/19 - 7/25)';
                     break;
+                case 202180:
+                    $weekInfo = '(10/25-10/31)';
+                    break;
             }
             break;
         case 11:
@@ -308,6 +341,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 2021533:
                     $weekInfo = '(7/26 - 8/1)';
+                    break;
+                case 202180:
+                    $weekInfo = '(11/1-11/7)';
                     break;
             }
             break;
@@ -322,6 +358,9 @@ function getWeekInfo($term, $weekNum) {
                 case 2021533:
                     $weekInfo = '(8/2 - 8/7)';
                     break;
+                case 202180:
+                    $weekInfo = '(11/8-11/14)';
+                    break;
             }
             break;
         case 13:
@@ -331,6 +370,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(4/12-4/18) <small>Mini Break #2 - Wed, 4/14</small>';
+                    break;
+                case 202180:
+                    $weekInfo = '(11/15-11/21)';
                     break;
             }
             break;
@@ -342,6 +384,10 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(4/19-4/25) <small>Stander Symposium, Thurs, 4/22</small>';
                     break;
+                case 202180:
+                    $weekInfo = '(11/22-11/28) <small>Thanksgiving Break, 11/24-11/26</small>';
+                    break;
+
             }
             break;
         case 15:
@@ -352,6 +398,10 @@ function getWeekInfo($term, $weekNum) {
                 case 202110:
                     $weekInfo = '(4/26-5/2) <small>Last Day of Classes - Fri, 4/30</small>';
                     break;
+                case 202180:
+                    $weekInfo = '(11/29-12/5)';
+                    break;
+
             }
             break;
         case 16:
@@ -361,6 +411,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202110:
                     $weekInfo = '(5/3-5/7) <small>Finals Week (M-F)</small>';
+                    break;
+                case 202180:
+                    $weekInfo = '(12/6-12/12) <small>Feast of Immaculate Conception, 12/8</small>';
                     break;
             }
             break;
