@@ -134,6 +134,9 @@ switch ($courseTerm) {
     case 202180:
         $termTitle = "Fall 2021";
         break;
+    case 202210:
+        $termTitle = "Spring 2022";
+        break;
     default:
         $termTitle = "Fall 2020";
         break;
