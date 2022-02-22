@@ -31,9 +31,12 @@ if ( $USER->instructor ) {
             switch (intval($plan["term"])) {
                 case 2021531:
                 case 2021532:
+                case 2022531:
+                case 2022532:
                     $weekCount = 6;
                     break;
                 case 2021533:
+                case 2022533:
                     $weekCount = 12;
                     break;
                 default:

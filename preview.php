@@ -88,6 +88,15 @@ switch ($courseTerm) {
     case 202210:
         $termTitle = "Spring 2022";
         break;
+    case 2022531:
+        $termTitle = "Summer 2022 - First Session";
+        break;
+    case 2022532:
+        $termTitle = "Summer 2022 - Second Session";
+        break;
+    case 2022533:
+        $termTitle = "Summer 2022 - Full Third Term";
+        break;
     default:
         $termTitle = "Fall 2020";
         break;
@@ -106,9 +115,12 @@ switch ($courseTerm) {
 switch (intval($courseTerm)) {
     case 2021531:
     case 2021532:
+    case 2022531:
+    case 2022532:
         $weekCount = 6;
         break;
     case 2021533:
+    case 2022533:
         $weekCount = 12;
         break;
     default:
@@ -171,6 +183,13 @@ function getWeekInfo($term, $weekNum) {
                 case 202210:
                     $weekInfo = '(1/10-1/16)';
                     break;
+                case 2022531:
+                case 2022533:
+                    $weekInfo = '(5/16 - 5/22)';
+                    break;
+                case 2022532:
+                    $weekInfo = '(6/27 - 7/3)';
+                    break;
             }
             break;
         case 2:
@@ -193,6 +212,13 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202210:
                     $weekInfo = '(1/17-1/23) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="MLK Day, 1/17"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
+                    break;
+                case 2022531:
+                case 2022533:
+                    $weekInfo = '(5/23 - 5/29)';
+                    break;
+                case 2022532:
+                    $weekInfo = '(7/4-7/10) <small>No class 7/5 in observance of Independence Day</small>';
                     break;
             }
             break;
@@ -217,6 +243,13 @@ function getWeekInfo($term, $weekNum) {
                 case 202210:
                     $weekInfo = '(1/24-1/30)';
                     break;
+                case 2022531:
+                case 2022533:
+                    $weekInfo = '(5/30-6/5) <small>Memorial Day Off, 5/30</small>';
+                    break;
+                case 2022532:
+                    $weekInfo = '(7/11 - 7/17)';
+                    break;
             }
             break;
         case 4:
@@ -239,6 +272,13 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202210:
                     $weekInfo = '(1/31-2/6)';
+                    break;
+                case 2022531:
+                case 2022533:
+                    $weekInfo = '(6/6 - 6/12)';
+                    break;
+                case 2022532:
+                    $weekInfo = '(7/18 - 7/24)';
                     break;
             }
             break;
@@ -263,6 +303,13 @@ function getWeekInfo($term, $weekNum) {
                 case 202210:
                     $weekInfo = '(2/7-2/27)';
                     break;
+                case 2022531:
+                case 2022533:
+                    $weekInfo = '(6/13 - 6/19)';
+                    break;
+                case 2022532:
+                    $weekInfo = '(7/25 - 7/31)';
+                    break;
             }
             break;
         case 6:
@@ -286,6 +333,13 @@ function getWeekInfo($term, $weekNum) {
                 case 202210:
                     $weekInfo = '(2/14-2/20)';
                     break;
+                case 2022531:
+                case 2022533:
+                    $weekInfo = '(6/20-6/25) <small>No class 6/20 in observance of Juneteenth</small>';
+                    break;
+                case 2022532:
+                    $weekInfo = '(8/1 - 8/6)';
+                    break;
             }
             break;
         case 7:
@@ -304,6 +358,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202210:
                     $weekInfo = '(2/21-2/27)';
+                    break;
+                case 2022533:
+                    $weekInfo = '(6/27 - 7/3)';
                     break;
             }
             break;
@@ -324,6 +381,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202210:
                     $weekInfo = '(2/28-3/6)';
                     break;
+                case 2022533:
+                    $weekInfo = '(7/4-7/10 <small>No class 7/4 in observance of Independence Day</small>';
+                    break;
             }
             break;
         case 9:
@@ -342,6 +402,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202210:
                     $weekInfo = '(3/7-3/13)';
+                    break;
+                case 2022533:
+                    $weekInfo = '(7/11 - 7/17)';
                     break;
             }
             break;
@@ -362,6 +425,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202210:
                     $weekInfo = '(3/14-3/20) <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Spring Break, 3/12-3/20"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>';
                     break;
+                case 2022533:
+                    $weekInfo = '(7/18 - 7/24)';
+                    break;
             }
             break;
         case 11:
@@ -381,6 +447,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202210:
                     $weekInfo = '(3/21-3/27)';
                     break;
+                case 2022533:
+                    $weekInfo = '(7/25 - 7/31)';
+                    break;
             }
             break;
         case 12:
@@ -399,6 +468,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202210:
                     $weekInfo = '(3/28-4/3)';
+                    break;
+                case 2022533:
+                    $weekInfo = '(8/1 - 8/6)';
                     break;
             }
             break;

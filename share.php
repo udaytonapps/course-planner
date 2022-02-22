@@ -137,6 +137,15 @@ switch ($courseTerm) {
     case 202210:
         $termTitle = "Spring 2022";
         break;
+    case 2022531:
+        $termTitle = "Summer 2022 - First Session";
+        break;
+    case 2022532:
+        $termTitle = "Summer 2022 - Second Session";
+        break;
+    case 2022533:
+        $termTitle = "Summer 2022 - Full Third Term";
+        break;
     default:
         $termTitle = "Fall 2020";
         break;
