@@ -712,8 +712,7 @@ function getWeekInfo($term, $weekNum) {
                     $weekInfo = 'Week 7<br /><span style="font-weight: normal;">(6/27-7/3)</span>';
                     break;
                 case 202280:
-                    $weekInfo = 'Week 7 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mid-Term Break, 10/7-10/8"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
-                        <br /><span style="font-weight: normal;">(10/3-10/9)</span>';
+                    $weekInfo = 'Week 7<span style="font-weight: normal;">(10/3-10/9)</span>';
                     break;
             }
             break;
@@ -766,7 +765,8 @@ function getWeekInfo($term, $weekNum) {
                     $weekInfo = 'Week 9<br /><span style="font-weight: normal;">(7/11-7/17)</span>';
                     break;
                 case 202280:
-                    $weekInfo = 'Week 9<br /><span style="font-weight: normal;">(10/17-10/23)</span>';
+                    $weekInfo = 'Week 9 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mid-Term Break, 10/17-10/18"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(10/17-10/23)</span>';
                     break;
             }
             break;

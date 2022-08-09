@@ -384,7 +384,7 @@ function getWeekInfo($term, $weekNum) {
                     $weekInfo = '(6/27 - 7/3)';
                     break;
                 case 202280:
-                    $weekInfo = '(10/3-10/09) <small>Mid-Term Break, 10/7-10/8"></small>';
+                    $weekInfo = '(10/3-10/09)';
                     break;
             }
             break;
@@ -434,7 +434,7 @@ function getWeekInfo($term, $weekNum) {
                     $weekInfo = '(7/11 - 7/17)';
                     break;
                 case 202280:
-                    $weekInfo = '(10/17-10/23)';
+                    $weekInfo = '(10/17-10/23) <small>Mid-Term Break, 10/17-10/18"></small>';
                     break;
             }
             break;
