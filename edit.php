@@ -200,6 +200,9 @@ switch ($courseTerm) {
     case 202280:
         $termTitle = "Fall 2022";
         break;
+    case 202310:
+        $termTitle = "Spring 2023";
+        break;
     default:
         $termTitle = "Fall 2020";
         break;
@@ -377,7 +380,8 @@ echo '<h3 class="term-title">'.$termTitle.'</h3>';
                         <div class="form-group">
                             <label for="renameTerm">Term Schedule</label>
                             <select id="renameTerm" name="term" class="form-control">
-                                <option value="2021533" <?= $courseTerm == 202280 ? "selected" : ""?>>Fall 2022</option>
+                                <option value="202310" <?= $courseTerm == 202310 ? "selected" : ""?>>Spring 2023</option>
+                                <option value="202280" <?= $courseTerm == 202280 ? "selected" : ""?>>Fall 2022</option>
                                 <option value="2021533" <?= $courseTerm == 2022533 ? "selected" : ""?>>Summer 2022 - Full Third Term</option>
                                 <option value="2021531" <?= $courseTerm == 2022531 ? "selected" : ""?>>Summer 2022 - First Session</option>
                                 <option value="2021532" <?= $courseTerm == 2022532 ? "selected" : ""?>>Summer 2022 - Second Session</option>
@@ -513,6 +517,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202280:
                     $weekInfo = 'Week 1<br /><span style="font-weight: normal;">(8/22-8/28)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 1<br /><span style="font-weight: normal;">(1/9-1/15)</span>';
+                    break;
             }
             break;
         case 2:
@@ -548,6 +555,10 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202280:
                     $weekInfo = 'Week 2<br /><span style="font-weight: normal;">(8/29-9/4)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 2 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="MLK Day, 1/16"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(1/16-1/22)</span>';
                     break;
             }
             break;
@@ -586,6 +597,9 @@ function getWeekInfo($term, $weekNum) {
                     $weekInfo = 'Week 3 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Labor Day, 9/5"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
                         <br /><span style="font-weight: normal;">(9/5-9/11)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 3<br /><span style="font-weight: normal;">(1/23-1/29)</span>';
+                    break;
             }
             break;
         case 4:
@@ -618,6 +632,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202280:
                     $weekInfo = 'Week 4<br /><span style="font-weight: normal;">(9/12-9/18)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 4<br /><span style="font-weight: normal;">(1/30-2/5)</span>';
                     break;
             }
             break;
@@ -652,6 +669,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202280:
                     $weekInfo = 'Week 5<br /><span style="font-weight: normal;">(9/19-9/25)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 5<br /><span style="font-weight: normal;">(2/6-2/12)</span>';
                     break;
             }
             break;
@@ -688,6 +708,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202280:
                     $weekInfo = 'Week 6<br /><span style="font-weight: normal;">(9/26-10/2)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 6<br /><span style="font-weight: normal;">(2/13-2/19)</span>';
+                    break;
             }
             break;
         case 7:
@@ -713,6 +736,9 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202280:
                     $weekInfo = 'Week 7<span style="font-weight: normal;">(10/3-10/9)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 7<br /><span style="font-weight: normal;">(2/20-2/26)</span>';
                     break;
             }
             break;
@@ -741,6 +767,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202280:
                     $weekInfo = 'Week 8<br /><span style="font-weight: normal;">(10/10-10/16)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 8<br /><span style="font-weight: normal;">(2/27-3/5)</span>';
+                    break;
             }
             break;
         case 9:
@@ -768,6 +797,10 @@ function getWeekInfo($term, $weekNum) {
                     $weekInfo = 'Week 9 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Mid-Term Break, 10/17-10/18"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
                         <br /><span style="font-weight: normal;">(10/17-10/23)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 9 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Spring Break begins 3/11"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(3/6-3/12)</span>';
+                    break;
             }
             break;
         case 10:
@@ -793,6 +826,10 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202280:
                     $weekInfo = 'Week 10<br /><span style="font-weight: normal;">(10/24-10/30)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 10 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Spring Break ends 3/19"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(1/16-1/22)</span>';
                     break;
             }
             break;
@@ -820,6 +857,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202280:
                     $weekInfo = 'Week 11<br /><span style="font-weight: normal;">(10/31-11/6)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 11<br /><span style="font-weight: normal;">(3/20-3/26)</span>';
+                    break;
             }
             break;
         case 12:
@@ -845,6 +885,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202280:
                     $weekInfo = 'Week 12<br /><span style="font-weight: normal;">(11/7-11/13)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 12<br /><span style="font-weight: normal;">(3/27-4/2)</span>';
+                    break;
             }
             break;
         case 13:
@@ -864,6 +907,10 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202280:
                     $weekInfo = 'Week 13<br /><span style="font-weight: normal;">(11/14-11/20)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 13 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Easter, 4/6-4/10"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(4/3-4/9)</span>';
                     break;
             }
             break;
@@ -889,6 +936,9 @@ function getWeekInfo($term, $weekNum) {
                     $weekInfo = 'Week 14 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Thanksgiving Break, 11/23-11/25"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
                         <br /><span style="font-weight: normal;">(11/21-11/27)</span>';
                     break;
+                case 202310:
+                    $weekInfo = 'Week 14<br /><span style="font-weight: normal;">(4/10-4/16)</span>';
+                    break;
             }
             break;
         case 15:
@@ -909,6 +959,10 @@ function getWeekInfo($term, $weekNum) {
                     break;
                 case 202280:
                     $weekInfo = 'Week 15<br /><span style="font-weight: normal;">(11/28-12/4)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 15 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Stander Symposium, 4/19"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
+                        <br /><span style="font-weight: normal;">(4/17-4/23)</span>';
                     break;
             }
             break;
@@ -932,6 +986,9 @@ function getWeekInfo($term, $weekNum) {
                 case 202280:
                     $weekInfo = 'Week 16 <a href="#" class="pull-right" data-toggle="tooltip" data-placement="top" title="Feast of Immaculate Conception, 12/8"><span class="fas fa-info-circle" aria-hidden="true"></span><span class="sr-only">Information</span></a>
                         <br /><span style="font-weight: normal;">(12/5-12/11)</span>';
+                    break;
+                case 202310:
+                    $weekInfo = 'Week 16<br /><span style="font-weight: normal;">(4/24-4/28)</span>';
                     break;
             }
             break;

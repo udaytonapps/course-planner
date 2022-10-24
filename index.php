@@ -116,6 +116,9 @@ $OUTPUT->flashMessages();
                             case 202280:
                                 $termTitle = "Fall 2022";
                                 break;
+                            case 202310:
+                                $termTitle = "Spring 2023";
+                                break;
                             default:
                                 $termTitle = "Fall 2020";
                                 break;
@@ -200,6 +203,9 @@ $OUTPUT->flashMessages();
                             case 202280:
                                 $termTitle = "Fall 2022";
                                 break;
+                            case 202310:
+                                $termTitle = "Spring 2023";
+                                break;
                             default:
                                 $termTitle = "Fall 2020";
                                 break;
@@ -244,6 +250,7 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="term">Term Schedule</label>
                             <select id="term" name="term" class="form-control">
+                                <option value="202310">Spring 2023</option>
                                 <option value="202280">Fall 2022</option>
                                 <option value="2022533">Summer 2022 - Full Third Term</option>
                                 <option value="2022531">Summer 2022 - First Session</option>
@@ -283,6 +290,7 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="renameTerm">Term Schedule</label>
                             <select id="renameTerm" name="term" class="form-control">
+                                <option value="202310">Spring 2023</option>
                                 <option value="202280">Fall 2022</option>
                                 <option value="2022533">Summer 2022 - Full Third Term</option>
                                 <option value="2022531">Summer 2022 - First Session</option>
