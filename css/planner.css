@@ -12,7 +12,7 @@ td, th {
 }
 thead th, tfoot th {
     width: 14%;
-    background: #EDF2F7;
+    background: var(--background-focus);
     z-index: 2;
     text-align: center;
 }
@@ -21,7 +21,7 @@ thead th:first-of-type, tfoot th:first-of-type {
     text-align: left;
 }
 tr:hover {
-    background: #E2E8F0;
+    background: var(--background-focus);
 }
 tbody th:hover, tbody td:hover {
     cursor: pointer;
@@ -29,6 +29,7 @@ tbody th:hover, tbody td:hover {
 }
 td.hasContent {
     background: #BEE3F8;
+    color: black;
 }
 td.hasContent span {
     display: block;
@@ -39,7 +40,7 @@ td.hasContent span {
 td:hover::after, td.hasContent:hover::after {
     content: "";
     position: absolute;
-    background: #E2E8F0;
+    background: var(--background-focus);
     left: 0;
     top: -5000px;
     height: 10000px;
@@ -103,13 +104,12 @@ div.planbox {
             0 22.3px 17.9px rgba(0, 0, 0, 0.072),
             0 41.8px 33.4px rgba(0, 0, 0, 0.086),
             0 100px 80px rgba(0, 0, 0, 0.12);
-    background: #fff;
     border: 1px solid #E2E8F0;
     border-radius: 5px;
     padding: 1rem;
 }
 div.list-group-item.h4 {
-    background: #EBF8FF;
+    background: var(--background-focus);
 }
 .fas.text-muted, .far.text-muted {
     color: #718096;
@@ -140,5 +140,8 @@ body {
     margin: 0;
     position: absolute;
     padding: 1rem 0 0;
-    color: #555;
+    color: var(--text-light);
+}
+.learner-message {
+    color: var(--text);
 }
