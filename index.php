@@ -1,5 +1,6 @@
 <?php
 require_once "../config.php";
+require_once "./terms.php";
 
 use \Tsugi\Core\LTIX;
 
@@ -8,7 +9,10 @@ $LAUNCH = LTIX::requireData();
 $p = $CFG->dbprefix;
 
 if (!$USER->instructor) {
-    echo '<p>This tool is for instructors only.</p>';
+    ?>
+        <link rel="stylesheet" href="css/learner.css" type="text/css">
+    <?php
+    echo '<p class="learner-text">This tool is for instructors only.</p>';
     return;
 }
 
@@ -84,54 +88,16 @@ $OUTPUT->flashMessages();
                             echo '</div>'; // End list group if not first iteration
                         }
                         $current_term = $plan["term"];
-                        // New list group
-                        switch ($current_term) {
-                            case 202110:
-                                $termTitle = "Spring 2021";
-                                break;
-                            case 2021531:
-                                $termTitle = "Summer 2021 - First Session";
-                                break;
-                            case 2021532:
-                                $termTitle = "Summer 2021 - Second Session";
-                                break;
-                            case 2021533:
-                                $termTitle = "Summer 2021 - Full Third Term";
-                                break;
-                            case 202180:
-                                $termTitle = "Fall 2021";
-                                break;
-                            case 202210:
-                                $termTitle = "Spring 2022";
-                                break;
-                            case 2022531:
-                                $termTitle = "Summer 2022 - First Session";
-                                break;
-                            case 2022532:
-                                $termTitle = "Summer 2022 - Second Session";
-                                break;
-                            case 2022533:
-                                $termTitle = "Summer 2022 - Full Third Term";
-                                break;
-                            case 202280:
-                                $termTitle = "Fall 2022";
-                                break;
-                            case 202310:
-                                $termTitle = "Spring 2023";
-                                break;
-                            default:
-                                $termTitle = "Fall 2020";
-                                break;
-                        }
+                        $termTitle = getTerm($current_term);
                         echo '<h5>'.$termTitle.'</h5>';
                         echo '<div class="list-group">';
                     }
                     echo '<div class="list-group-item h4">';
                     echo '<a href="edit.php?course='.$plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$plan["title"].'</a> ';
                     if ($sharecount["total"] > 1) {
-                        echo '<span class="text-muted" data-toggle="tooltip" title="Shared with multiple people"><span class="fas fa-users fa-fw" aria-hidden="true"></span></span>';
+                        echo '<span data-toggle="tooltip" title="Shared with multiple people"><span class="fas fa-users fa-fw" aria-hidden="true"></span></span>';
                     } else if ($sharecount["total"] > 0) {
-                        echo '<span class="text-muted" data-toggle="tooltip" title="Shared with one other person"><span class="fas fa-user-friends fa-fw" aria-hidden="true"></span></span>';
+                        echo '<span data-toggle="tooltip" title="Shared with one other person"><span class="fas fa-user-friends fa-fw" aria-hidden="true"></span></span>';
                     }
                     echo '<div class="pull-right">
                             <a href="preview.php?course='.$plan["course_id"].'" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
@@ -171,54 +137,16 @@ $OUTPUT->flashMessages();
                             echo '</div>'; // End list group if not first iteration
                         }
                         $current_term = $shared_plan["term"];
-                        // New list group
-                        switch ($current_term) {
-                            case 202110:
-                                $termTitle = "Spring 2021";
-                                break;
-                            case 2021531:
-                                $termTitle = "Summer 2021 - First Session";
-                                break;
-                            case 2021532:
-                                $termTitle = "Summer 2021 - Second Session";
-                                break;
-                            case 2021533:
-                                $termTitle = "Summer 2021 - Full Third Term";
-                                break;
-                            case 202180:
-                                $termTitle = "Fall 2021";
-                                break;
-                            case 202210:
-                                $termTitle = "Spring 2022";
-                                break;
-                            case 2022531:
-                                $termTitle = "Summer 2022 - First Session";
-                                break;
-                            case 2022532:
-                                $termTitle = "Summer 2022 - Second Session";
-                                break;
-                            case 2022533:
-                                $termTitle = "Summer 2022 - Full Third Term";
-                                break;
-                            case 202280:
-                                $termTitle = "Fall 2022";
-                                break;
-                            case 202310:
-                                $termTitle = "Spring 2023";
-                                break;
-                            default:
-                                $termTitle = "Fall 2020";
-                                break;
-                        }
+                        $termTitle = getTerm($current_term);
                         echo '<h5>'.$termTitle.'</h5>';
                         echo '<div class="list-group">';
                     }
                     echo '<div class="list-group-item h4">';
                     echo '<a href="edit.php?course='.$shared_plan["course_id"].'"><span class="fas fa-cube" style="padding-right:8px;" aria-hidden="true"></span> '.$shared_plan["title"].'</a> ';
-                    echo '<span data-toggle="tooltip" title="Owner: '.$displayname.'" class="text-muted"><span class="fas fa-user-shield" aria-hidden="true"></span><span class="sr-only">Owner</span></span>';
+                    echo '<span data-toggle="tooltip" title="Owner: '.$displayname.'"><span class="fas fa-user-shield" aria-hidden="true"></span><span class="sr-only">Owner</span></span>';
                     echo '<div class="pull-right">';
                     if ($shared_plan["can_edit"] == 0) {
-                        echo '<span data-toggle="tooltip" title="Read-only access" class="fas fa-lock text-muted" style="padding-left:8px;" aria-hidden="true"></span><span class="sr-only">Read-only</span>';
+                        echo '<span data-toggle="tooltip" title="Read-only access" class="fas fa-lock" style="padding-left:8px;" aria-hidden="true"></span><span class="sr-only">Read-only</span>';
                     }
                     echo '  <a href="preview.php?course='.$shared_plan["course_id"].'" class="plan-link" title="Preview"><span class="far fa-eye" aria-hidden="true"></span><span class="sr-only">Preview</span></a>
                             <a href="copyplan.php?course='.$shared_plan["course_id"].'" class="plan-link" title="Copy"><span class="far fa-clone" aria-hidden="true"></span><span class="sr-only">Copy</span></a>
@@ -250,18 +178,7 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="term">Term Schedule</label>
                             <select id="term" name="term" class="form-control">
-                                <option value="202310">Spring 2023</option>
-                                <option value="202280">Fall 2022</option>
-                                <option value="2022533">Summer 2022 - Full Third Term</option>
-                                <option value="2022531">Summer 2022 - First Session</option>
-                                <option value="2022532">Summer 2022 - Second Session</option>
-                                <option value="202210">Spring 2022</option>
-                                <option value="202180">Fall 2021</option>
-                                <option value="2021533">Summer 2021 - Full Third Term</option>
-                                <option value="2021531">Summer 2021 - First Session</option>
-                                <option value="2021532">Summer 2021 - Second Session</option>
-                                <option value="202110">Spring 2021</option>
-                                <option value="202080">Fall 2020</option>
+                                <?= renderTermOptions(); ?>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button> <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
@@ -290,18 +207,7 @@ $OUTPUT->flashMessages();
                         <div class="form-group">
                             <label for="renameTerm">Term Schedule</label>
                             <select id="renameTerm" name="term" class="form-control">
-                                <option value="202310">Spring 2023</option>
-                                <option value="202280">Fall 2022</option>
-                                <option value="2022533">Summer 2022 - Full Third Term</option>
-                                <option value="2022531">Summer 2022 - First Session</option>
-                                <option value="2022532">Summer 2022 - Second Session</option>
-                                <option value="202210">Spring 2022</option>
-                                <option value="202180">Fall 2021</option>
-                                <option value="2021533">Summer 2021 - Full Third Term</option>
-                                <option value="2021531">Summer 2021 - First Session</option>
-                                <option value="2021532">Summer 2021 - Second Session</option>
-                                <option value="202110">Spring 2021</option>
-                                <option value="202080">Fall 2020</option>
+                                <?= renderTermOptions(null); ?>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button> <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>

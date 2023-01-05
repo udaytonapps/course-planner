@@ -1,5 +1,6 @@
 <?php
 require_once "../config.php";
+require_once "./terms.php";
 
 use \Tsugi\Core\LTIX;
 
@@ -8,7 +9,10 @@ $LAUNCH = LTIX::requireData();
 $p = $CFG->dbprefix;
 
 if (!$USER->instructor) {
-    echo '<p>This tool is for instructors only.</p>';
+    ?>
+        <link rel="stylesheet" href="css/learner.css" type="text/css">
+    <?php
+    echo '<p class="learner-text">This tool is for instructors only.</p>';
     return;
 }
 
@@ -169,44 +173,7 @@ $OUTPUT->flashMessages();
 if (!$can_edit) {
     echo '<div style="position:relative;width:100%;"><div class="alert alert-warning h4"><span class="fas fa-lock" aria-hidden="true"></span> You have read-only access to this course plan.</div></div>';
 }
-switch ($courseTerm) {
-    case 202110:
-        $termTitle = "Spring 2021";
-        break;
-    case 2021531:
-        $termTitle = "Summer 2021 - First Session";
-        break;
-    case 2021532:
-        $termTitle = "Summer 2021 - Second Session";
-        break;
-    case 2021533:
-        $termTitle = "Summer 2021 - Full Third Term";
-        break;
-    case 202180:
-        $termTitle = "Fall 2021";
-        break;
-    case 202210:
-        $termTitle = "Spring 2022";
-        break;
-    case 2022531:
-        $termTitle = "Summer 2022 - First Session";
-        break;
-    case 2022532:
-        $termTitle = "Summer 2022 - Second Session";
-        break;
-    case 2022533:
-        $termTitle = "Summer 2022 - Full Third Term";
-        break;
-    case 202280:
-        $termTitle = "Fall 2022";
-        break;
-    case 202310:
-        $termTitle = "Spring 2023";
-        break;
-    default:
-        $termTitle = "Fall 2020";
-        break;
-}
+$termTitle = getTerm($courseTerm);
 echo '<h3 class="term-title">'.$termTitle.'</h3>';
 ?>
     <div id="toolTitle" class="h1">
@@ -234,9 +201,9 @@ echo '<h3 class="term-title">'.$termTitle.'</h3>';
         <span class="title-text-span"><?= $courseTitle ?></span>
         <?php
         if ($sharecount["total"] > 1) {
-            echo '<span class="text-muted" data-toggle="tooltip" title="Shared with multiple people"><span class="fas fa-users fa-fw" aria-hidden="true"></span></span>';
+            echo '<span data-toggle="tooltip" title="Shared with multiple people"><span class="fas fa-users fa-fw" aria-hidden="true"></span></span>';
         } else if ($sharecount["total"] > 0) {
-            echo '<span class="text-muted" data-toggle="tooltip" title="Shared with one other person"><span class="fas fa-user-friends fa-fw" aria-hidden="true"></span></span>';
+            echo '<span data-toggle="tooltip" title="Shared with one other person"><span class="fas fa-user-friends fa-fw" aria-hidden="true"></span></span>';
         }
         ?>
     </div>
@@ -285,17 +252,17 @@ echo '<h3 class="term-title">'.$termTitle.'</h3>';
             echo'<th data-week="'.$weekNum.'">'.getWeekInfo($courseTerm, $weekNum).'</th>';
             ?>
             <td data-week="<?=$weekNum?>" data-contenttype="Topic(s)" class="<?=$planWeek && !empty($planWeek["topics"]) ? 'hasContent' : 'empty'?>">
-                <span><?=$planWeek ? strip_tags($planWeek["topics"]) : ""?></span>
+                <span><?=$planWeek && isset($planWeek["topics"]) ? strip_tags($planWeek["topics"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["topics"] : ""?></textarea>
                 <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["topics"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Readings" class="<?=$planWeek && !empty($planWeek["readings"]) ? 'hasContent' : 'empty'?>">
-                <span><?=$planWeek ? strip_tags($planWeek["readings"]) : ""?></span>
+                <span><?=$planWeek && isset($planWeek["readings"]) ? strip_tags($planWeek["readings"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["readings"] : ""?></textarea>
                 <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["readings"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Videos" class="<?=$planWeek && !empty($planWeek["videos"]) ? 'hasContent' : 'empty'?>">
-                <span><?=$planWeek ? strip_tags($planWeek["videos"]) : ""?></span>
+                <span><?=$planWeek && isset($planWeek["videos"]) ? strip_tags($planWeek["videos"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["videos"] : ""?></textarea>
                 <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["videos"] : ""?></div>
             </td>
@@ -303,17 +270,17 @@ echo '<h3 class="term-title">'.$termTitle.'</h3>';
             $cell_override = $cell_override . ' righthalf';
             ?>
             <td data-week="<?=$weekNum?>" data-contenttype="Activities" class="<?=$planWeek && !empty($planWeek["activities"]) ? 'hasContent' : 'empty'?>">
-                <span><?=$planWeek ? strip_tags($planWeek["activities"]) : ""?></span>
+                <span><?=$planWeek && isset($planWeek["activities"]) ? strip_tags($planWeek["activities"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["activities"] : ""?></textarea>
                 <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["activities"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Assignments" class="<?=$planWeek && !empty($planWeek["assignments"]) ? 'hasContent' : 'empty'?>">
-                <span><?=$planWeek ? strip_tags($planWeek["assignments"]) : ""?></span>
+                <span><?=$planWeek && isset($planWeek["assignments"]) ? strip_tags($planWeek["assignments"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["assignments"] : ""?></textarea>
                 <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["assignments"] : ""?></div>
             </td>
             <td data-week="<?=$weekNum?>" data-contenttype="Tests/Exams" class="<?=$planWeek && !empty($planWeek["exams"]) ? 'hasContent' : 'empty'?>">
-                <span><?=$planWeek ? strip_tags($planWeek["exams"]) : ""?></span>
+                <span><?=$planWeek && isset($planWeek["exams"]) ? strip_tags($planWeek["exams"]) : ""?></span>
                 <textarea class="content"><?=$planWeek ? $planWeek["exams"] : ""?></textarea>
                 <div class="cell-details <?=$cell_override?>"><?=$planWeek ? $planWeek["exams"] : ""?></div>
             </td>
@@ -380,18 +347,7 @@ echo '<h3 class="term-title">'.$termTitle.'</h3>';
                         <div class="form-group">
                             <label for="renameTerm">Term Schedule</label>
                             <select id="renameTerm" name="term" class="form-control">
-                                <option value="202310" <?= $courseTerm == 202310 ? "selected" : ""?>>Spring 2023</option>
-                                <option value="202280" <?= $courseTerm == 202280 ? "selected" : ""?>>Fall 2022</option>
-                                <option value="2021533" <?= $courseTerm == 2022533 ? "selected" : ""?>>Summer 2022 - Full Third Term</option>
-                                <option value="2021531" <?= $courseTerm == 2022531 ? "selected" : ""?>>Summer 2022 - First Session</option>
-                                <option value="2021532" <?= $courseTerm == 2022532 ? "selected" : ""?>>Summer 2022 - Second Session</option>
-                                <option value="202210" <?= $courseTerm == 202210 ? "selected" : ""?>>Spring 2022</option>
-                                <option value="202180" <?= $courseTerm == 202180 ? "selected" : ""?>>Fall 2021</option>
-                                <option value="2021533" <?= $courseTerm == 2021533 ? "selected" : ""?>>Summer 2021 - Full Third Term</option>
-                                <option value="2021531" <?= $courseTerm == 2021531 ? "selected" : ""?>>Summer 2021 - First Session</option>
-                                <option value="2021532" <?= $courseTerm == 2021532 ? "selected" : ""?>>Summer 2021 - Second Session</option>
-                                <option value="202110" <?= $courseTerm == 202010 ? "selected" : ""?>>Spring 2021</option>
-                                <option value="202080" <?= $courseTerm == 202080 ? "selected" : ""?>>Fall 2020</option>
+                                <?= renderTermOptions($courseTerm); ?>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button> <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
