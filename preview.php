@@ -1,5 +1,6 @@
 <?php
 require_once "../config.php";
+require_once "./terms.php";
 
 use \Tsugi\Core\LTIX;
 
@@ -8,7 +9,10 @@ $LAUNCH = LTIX::requireData();
 $p = $CFG->dbprefix;
 
 if (!$USER->instructor) {
-    echo '<p>This tool is for instructors only.</p>';
+    ?>
+        <link rel="stylesheet" href="css/learner.css" type="text/css">
+    <?php
+    echo '<p class="learner-text">This tool is for instructors only.</p>';
     return;
 }
 
@@ -69,44 +73,7 @@ $OUTPUT->topNav($menu);
 echo '<div class="container-fluid">';
 
 $OUTPUT->flashMessages();
-switch ($courseTerm) {
-    case 202110:
-        $termTitle = "Spring 2021";
-        break;
-    case 2021531:
-        $termTitle = "Summer 2021 - First Session";
-        break;
-    case 2021532:
-        $termTitle = "Summer 2021 - Second Session";
-        break;
-    case 2021533:
-        $termTitle = "Summer 2021 - Full Third Term";
-        break;
-    case 202180:
-        $termTitle = "Fall 2021";
-        break;
-    case 202210:
-        $termTitle = "Spring 2022";
-        break;
-    case 2022531:
-        $termTitle = "Summer 2022 - First Session";
-        break;
-    case 2022532:
-        $termTitle = "Summer 2022 - Second Session";
-        break;
-    case 2022533:
-        $termTitle = "Summer 2022 - Full Third Term";
-        break;
-    case 202280:
-        $termTitle = "Fall 2022";
-        break;
-    case 202310:
-        $termTitle = "Spring 2023";
-        break;
-    default:
-        $termTitle = "Fall 2020";
-        break;
-}
+$termTitle = getTerm($courseTerm);
 ?>
 <h2>
     <a href="javascript:window.print();" class="print-icon pull-right btn btn-link">
